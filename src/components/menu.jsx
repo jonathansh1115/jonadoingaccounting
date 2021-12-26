@@ -27,13 +27,13 @@ import {
     onSnapshot,
     orderBy,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    where
 } from 'firebase/firestore';
 
 export default (props) => {
 
-    const userId = window.localStorage.getItem("uid")
-    const [collections, setCollections] = useState([])
+    let userId
 
     const [newAccountingForm, setNewAccountingForm] = useState(false)
     const [newAccountingName, setNewAccountingName] = useState("")
@@ -41,28 +41,89 @@ export default (props) => {
     // read all collection of this user
     const databaseLocation = "users_stuff"
 
-    useEffect(() => {
-        const unsubscribe = onSnapshot(doc(props.db, databaseLocation, userId == null ? "x" : userId), (doc) => {
-            if (doc.data().collections !== undefined) {
-                // set collections to be printed out later
-                setCollections(doc.data().collections)
-            } else {
-                // it is undefined, check firestore probably got problem there
-            }
-        })
-    }, [])
+    // useEffect(() => {
+    //     console.log(userId)
+    //     const unsubscribe = onSnapshot(doc(props.db, databaseLocation, userId == null ? "x" : userId), (doc) => {
+    //         if (doc.data().collections !== undefined) {
+    //             // set collections to be printed out later
+    //             setCollections(doc.data().collections)
+    //         } else {
+    //             // it is undefined, check firestore probably got problem there
+    //         }
+    //     })
+    // }, [])
 
-    // control sign in sign out status function
-    // const [signedIn, setSignedIn] = useState(false)
-    // onAuthStateChanged(props.auth, (user) => {
-    //     if (user) {
-    //         // Signed in
-    //         setSignedIn(true)
-    //     } else {
-    //         // Not Signed in
-    //         setSignedIn(false)
-    //     }
-    // })
+    const [signedIn, setSignedIn] = useState(false)
+    // const [count, setCount] = useState(0)
+
+    onAuthStateChanged(props.auth, (user) => {
+        if (user) {
+            // Signed in
+            setSignedIn(true)
+            // setCount(count + 1)
+        } else {
+            // Not Signed in
+            setSignedIn(false)
+        }
+    })
+
+    const [collections, setCollections] = useState([])
+    const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
+    
+    useEffect(() => {
+        setTimeout(() => {
+            const userId = window.localStorage.getItem("uid")
+            const q = query(collection(props.db, databaseLocation), where("uid", "==", userId))
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const tempCollection = []
+                querySnapshot.forEach((doc) => {
+                    // console.log(doc.data())
+                    // console.log(doc.data().collections)
+                    const temp = doc.data().collections // an array
+                    console.log(temp)
+                    for (let i = 0; i < temp.length; ++i) {
+                        tempCollection.push(temp[i])
+                    }
+
+                    // get current user data for createNewCollection() to use
+                    const tempCurrentUserData = []
+                    tempCurrentUserData.push(doc.data().uid)
+                    tempCurrentUserData.push(doc.data().email)
+                    tempCurrentUserData.push(doc.data().userRegTime)
+                    setCurrentUserData(tempCurrentUserData)
+                }) // technically should only run once
+    
+                // console.log(tempCollection)
+                setCollections(tempCollection)
+
+            })
+            // console.log(signedIn)
+        }, 100);
+    }, [props.signedIn, signedIn])
+    
+    const createNewCollection = (collectionName) => {
+        console.log(newAccountingName)
+        // add to on screen "collections"(the "collections" state)
+        let tempCollection = collections
+        // console.log(tempCollection)
+        tempCollection.push(collectionName)
+        // console.log(tempCollection)
+        // console.log(collections)
+        setCollections(tempCollection)
+        // console.log(collections)
+
+        const userIdLOCAL = window.localStorage.getItem("uid")
+        
+        // replace server "collections" with on screen "collections"(the "collections state")
+        setDoc(doc(props.db, "users_stuff", userIdLOCAL), {
+            uid: currentUserData[0],
+            email: currentUserData[1],
+            userRegTime: currentUserData[2],
+            collections: collections
+        })
+        setDoc(doc(props.db, "users_stuff/"+userIdLOCAL+"/"+collectionName, "dummy_doc_pls_ignore"), {
+        })
+    }
 
     return (
         <div>
@@ -87,7 +148,10 @@ export default (props) => {
                                 <form>
                                     New accounting: <input value={newAccountingName} onChange={(e) => setNewAccountingName(e.target.value)} />
                                     &nbsp; {/*space*/}
-                                    <button onClick={() => { setNewAccountingForm(false) }}>Submit</button>
+                                    <button onClick={(e) => { e.preventDefault();
+                                                              createNewCollection(newAccountingName); 
+                                                              setNewAccountingForm(false);
+                                                            }}>Submit</button>
                                     &nbsp; {/*space*/}
                                     <button onClick={() => { setNewAccountingForm(false) }}>Cancel</button>
                                 </form>

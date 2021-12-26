@@ -23,6 +23,8 @@ export default (props) => {
                     <button onClick={props.signInWithGoogle}>log in</button>
                     <br />
                     <img src="https://media.giphy.com/media/YpkBkJ6cPrFijHAaUt/giphy.gif" width="100px" />
+                    <br /><br /><br />
+                    <a href="https://github.com/jonathansh1115/jonadoingaccounting">Github Repo</a>
                 </div>
             }
         </div>

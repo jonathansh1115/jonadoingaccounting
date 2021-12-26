@@ -68,19 +68,15 @@ function App() {
 
   // add new user function
   const addNewUser = (userId, email) => {
-    setDoc(doc(db, "users", userId), {
-      uid: userId,
-      email: email,
-      userRegTime: serverTimestamp()
-    })
     // create new doc in users_stuff collection
     setDoc(doc(db, "users_stuff", userId), {
       uid: userId,
       email: email,
-      userRegTime: serverTimestamp()
+      userRegTime: serverTimestamp(),
+      collections: []
     })
     // create new collection "chase" and a dummy doc
-    setDoc(doc(db, "users_stuff/"+userId+"/chase", "dummy_doc_pls_ignore"), {
+    setDoc(doc(db, "users_stuff/"+userId+"/dummy_collection_pls_ignore", "dummy_doc_pls_ignore"), {
     })
   }
 
@@ -147,7 +143,7 @@ function App() {
 
       {/*aka Navbar*/}
       <Route path="/">
-        <Menu signedIn={signedIn} db={db} auth={auth} />
+        <Menu signedIn={signedIn} db={db} auth={auth} userId={userId} />
       </Route>
 
       <Route exact path="/">
