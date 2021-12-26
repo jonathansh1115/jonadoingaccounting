@@ -33,25 +33,11 @@ import {
 
 export default (props) => {
 
-    let userId
-
     const [newAccountingForm, setNewAccountingForm] = useState(false)
     const [newAccountingName, setNewAccountingName] = useState("")
 
     // read all collection of this user
     const databaseLocation = "users_stuff"
-
-    // useEffect(() => {
-    //     console.log(userId)
-    //     const unsubscribe = onSnapshot(doc(props.db, databaseLocation, userId == null ? "x" : userId), (doc) => {
-    //         if (doc.data().collections !== undefined) {
-    //             // set collections to be printed out later
-    //             setCollections(doc.data().collections)
-    //         } else {
-    //             // it is undefined, check firestore probably got problem there
-    //         }
-    //     })
-    // }, [])
 
     const [signedIn, setSignedIn] = useState(false)
     // const [count, setCount] = useState(0)
@@ -102,7 +88,7 @@ export default (props) => {
     }, [props.signedIn, signedIn])
     
     const createNewCollection = (collectionName) => {
-        console.log(newAccountingName)
+        // console.log(newAccountingName)
         // add to on screen "collections"(the "collections" state)
         let tempCollection = collections
         // console.log(tempCollection)
