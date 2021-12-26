@@ -75,9 +75,6 @@ function App() {
       userRegTime: serverTimestamp(),
       collections: []
     })
-    // create new collection "chase" and a dummy doc
-    setDoc(doc(db, "users_stuff/"+userId+"/dummy_collection_pls_ignore", "dummy_doc_pls_ignore"), {
-    })
   }
 
   // sign in function
