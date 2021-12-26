@@ -6,7 +6,7 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <h3>Mplus</h3>
+                        <h3>Mplus :)</h3>
                     </div>
                     :
                     <div>
