@@ -68,26 +68,44 @@ export default (props) => {
         <div>
             {
                 props.signedIn ?
-                <div>
-                    <Link to="/">Home</Link>
-                    &nbsp; {/*space*/}
+                    <div>
+                        <Link to="/">Home</Link>
+                        &nbsp; {/*space*/}
 
-                    {
-                        collections.map((collection) =>
-                            <div>
-                                <Link to={"/" + collection}>{collection}</Link>
-                            </div>
-                        )
-                    }
-                </div>
-                :
-                <div>
-                    
-                </div>
+                        {
+                            collections.map((collection) =>
+                                <div>
+                                    <Link to={"/" + collection}>{collection}</Link>
+                                </div>
+                            )
+                        }
+
+                        <button onClick={() => setNewAccountingForm(true)}>Create new</button>
+
+                        {
+                            newAccountingForm ?
+                                <form>
+                                    New accounting: <input value={newAccountingName} onChange={(e) => setNewAccountingName(e.target.value)} />
+                                    &nbsp; {/*space*/}
+                                    <button onClick={() => { setNewAccountingForm(false) }}>Submit</button>
+                                    &nbsp; {/*space*/}
+                                    <button onClick={() => { setNewAccountingForm(false) }}>Cancel</button>
+                                </form>
+                                :
+                                <div></div>
+                        }
+                    </div>
+                    :
+                    <div>
+
+                    </div>
             }
+
+
+
         </div>
     )
-    
+
     // return (
 
     //     <div>
