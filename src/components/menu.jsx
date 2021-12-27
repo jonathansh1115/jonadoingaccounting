@@ -88,15 +88,10 @@ export default (props) => {
     }, [props.signedIn, signedIn])
     
     const createNewCollection = (collectionName) => {
-        // console.log(newAccountingName)
         // add to on screen "collections"(the "collections" state)
         let tempCollection = collections
-        // console.log(tempCollection)
         tempCollection.push(collectionName)
-        // console.log(tempCollection)
-        // console.log(collections)
         setCollections(tempCollection)
-        // console.log(collections)
 
         const userIdLOCAL = window.localStorage.getItem("uid")
         
@@ -107,7 +102,7 @@ export default (props) => {
             userRegTime: currentUserData[2],
             collections: collections
         })
-        setDoc(doc(props.db, "users_stuff/"+userIdLOCAL+"/"+collectionName, "dummy_doc_pls_ignore"), {
+        setDoc(doc(props.db, "users_stuff/" +userIdLOCAL + "/" + collectionName, "dummy_doc_pls_ignore"), {
         })
     }
 
@@ -122,7 +117,7 @@ export default (props) => {
                         {
                             collections.map((collection) =>
                                 <div>
-                                    <Link to={"/" + collection}>{collection}</Link>
+                                    <Link to={"/accounting/" + collection}>{collection}</Link>
                                 </div>
                             )
                         }

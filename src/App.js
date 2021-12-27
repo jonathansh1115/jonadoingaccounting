@@ -37,6 +37,7 @@ import Menu from "./components/menu.jsx"
 
 // pages
 import Home from "./pages/home.jsx"
+import Accounting from "./pages/accounting.jsx"
 import Chase from "./pages/chase.jsx"
 import Invest from "./pages/invest.jsx"
 import Mplus from "./pages/mplus.jsx"
@@ -75,6 +76,7 @@ function App() {
       userRegTime: serverTimestamp(),
       collections: []
     })
+    console.log("new user account created!")
   }
 
   // sign in function
@@ -148,6 +150,10 @@ function App() {
           signedIn={signedIn}
           signInWithGoogle={signInWithGoogle}
           signOutWithGoogle={signOutWithGoogle} />
+      </Route>
+
+      <Route path="/accounting/:accountingName">
+        <Accounting signedIn={signedIn} db={db} />
       </Route>
 
       <Route path="/chase">
