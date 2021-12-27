@@ -63,10 +63,7 @@ export default (props) => {
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const tempCollection = []
                 querySnapshot.forEach((doc) => {
-                    // console.log(doc.data())
-                    // console.log(doc.data().collections)
                     const temp = doc.data().collections // an array
-                    console.log(temp)
                     for (let i = 0; i < temp.length; ++i) {
                         tempCollection.push(temp[i])
                     }
@@ -79,7 +76,6 @@ export default (props) => {
                     setCurrentUserData(tempCurrentUserData)
                 }) // technically should only run once
     
-                // console.log(tempCollection)
                 setCollections(tempCollection)
 
             })

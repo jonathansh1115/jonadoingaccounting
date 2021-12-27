@@ -13,7 +13,12 @@ export default (props) => {
             {
                 props.signedIn ?
                 <div>
-                    <h1>Hi, {props.name}</h1>
+                    {
+                        props.newUser ?
+                        <h1>Welcome! {props.name}</h1>
+                        :
+                        <h1>Hi, {props.name}!</h1>
+                    }
                     <img src="https://media.giphy.com/media/Wj7lNjMNDxSmc/giphy.gif" />
                     <br />
                     <button onClick={props.signOutWithGoogle}>Sign out</button>

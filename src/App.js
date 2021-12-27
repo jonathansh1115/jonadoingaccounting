@@ -39,8 +39,6 @@ import Menu from "./components/menu.jsx"
 import Home from "./pages/home.jsx"
 import Accounting from "./pages/accounting.jsx"
 import Chase from "./pages/chase.jsx"
-import Invest from "./pages/invest.jsx"
-import Mplus from "./pages/mplus.jsx"
 // import Test from "./pages/test.jsx"
 
 // Initialize Firebase
@@ -66,6 +64,7 @@ function App() {
 
   const [name, setName] = useState("")
   const [userId, setUserId] = useState("")
+  const [newUser, setNewUser] = useState(false)
 
   // add new user function
   const addNewUser = (userId, email) => {
@@ -76,7 +75,7 @@ function App() {
       userRegTime: serverTimestamp(),
       collections: []
     })
-    console.log("new user account created!")
+    setNewUser(true)
   }
 
   // sign in function
@@ -149,28 +148,14 @@ function App() {
         <Home name={name}
           signedIn={signedIn}
           signInWithGoogle={signInWithGoogle}
-          signOutWithGoogle={signOutWithGoogle} />
+          signOutWithGoogle={signOutWithGoogle}
+          newUser={newUser} />
       </Route>
 
       <Route path="/accounting/:accountingName">
         <Accounting signedIn={signedIn} db={db} />
       </Route>
 
-      <Route path="/chase">
-        <Chase signedIn={signedIn} db={db} userId={userId} auth={auth} name={name} />
-      </Route>
-
-      <Route path="/invest">
-        <Invest signedIn={signedIn} />
-      </Route>
-
-      <Route path="/mplus">
-        <Mplus signedIn={signedIn} />
-      </Route>
-
-      {/* <Route path="/test">
-        <Test signedIn={signedIn} />
-      </Route> */}
     </div>
   )
 }

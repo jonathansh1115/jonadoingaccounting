@@ -25,11 +25,9 @@ export default (props) => {
 
     const location = useLocation().pathname
     const currentAccountingName = location.split("/")[2]
-    console.log(currentAccountingName)
     
     const userId = window.localStorage.getItem("uid")
     const databaseLocation = "users_stuff/" + userId + "/" + currentAccountingName
-    console.log(databaseLocation)
     
     const [date, setDate] = useState("")             // String
     const [stuff, setStuff] = useState("")           // String
