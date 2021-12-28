@@ -29,10 +29,12 @@ export default (props) => {
     const userId = window.localStorage.getItem("uid")
     const databaseLocation = "users_stuff/" + userId + "/" + currentAccountingName
     
+    const [type, setType] = useState("i")            // set if amount is income (i) or expenses (e)
+    
     const [date, setDate] = useState("")             // String
     const [stuff, setStuff] = useState("")           // String
     const [amount, setAmount] = useState(0)          // Number
-    const [forWhat, setForWhat] = useState("s")      // c = for college; s = for spending (default)
+    const [forWhat, setForWhat] = useState("")       // String: types: Education, 
 
     // write stuff
     const writeStuff = () => {
@@ -40,7 +42,7 @@ export default (props) => {
             addDoc(collection(props.db, databaseLocation), {
                 date: date,
                 stuff: stuff,
-                amount: parseFloat(amount),
+                amount: type=="i"?parseFloat(amount):-parseFloat(amount), // positive for i (income), negative for e (expenses)
                 type: forWhat,
                 dateRecorded: serverTimestamp()
             })
@@ -49,7 +51,7 @@ export default (props) => {
             setDate("")
             setStuff("")
             setAmount(0)
-            setForWhat("s")
+            setForWhat("")
         } else {
             return (
                 alert("Error: Field cannot be empty!")
@@ -140,9 +142,29 @@ export default (props) => {
 
                             <br />
 
-                            <input type="radio" name="type" onChange={() => setForWhat("c")} />For College
+                            <input type="radio" name="type" onChange={() => setType("i")} />Income
                             <br />
-                            <input type="radio" name="type" onChange={() => setForWhat("s")} />For Spending
+                            <input type="radio" name="type" onChange={() => setType("e")} />Expenses
+
+                            <br />
+
+                            {
+                                type === "i" ?
+                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                    <option value=""></option>
+                                    <option value="Salary">Salary</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                :
+                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                    <option value=""></option>
+                                    <option value="Education">Education</option>
+                                    <option value="Groceries">Groceries</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            }
 
                             <br />
 
