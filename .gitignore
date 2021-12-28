@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # firebase's cache bs
-/.firebase
+/.firebase 
+# the above line doesnt do its job well idk why but whatever 
