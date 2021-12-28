@@ -60,6 +60,35 @@ export default (props) => {
     }
 
 
+    // edit stuff
+    const [editWindow, setEditWindow] = useState(false)
+    const [currentEditStuffId, setCurrentEditStuffId] = useState("")
+
+    const editStuff = () => {
+        if (date !== "" && stuff !== "" && amount !== 0) {
+            setDoc(doc(props.db, databaseLocation, currentEditStuffId), {
+                date: date,
+                stuff: stuff,
+                amount: type=="i"?parseFloat(amount):-parseFloat(amount),
+                type: forWhat,
+            })
+    
+            // reset to default
+            setDate("")
+            setStuff("")
+            setAmount(0)
+            setForWhat("s")
+            setCurrentEditStuffId("")
+
+            setEditWindow(false)
+        } else {
+            return (
+                alert("Error: Field cannot be empty!")
+            )
+        }
+    }
+
+
     // for only getting one doc
     // const unsubscribe = onSnapshot(doc(props.db, "users_stuff/RPOpC81pnGfjWcU0kRRUsyrfEU12/chase", "WJRatHWgPfo6vL51JQ4y"), (doc) => {
     //     console.log("Current data: ", doc.data())
@@ -91,35 +120,6 @@ export default (props) => {
     }, [currentAccountingName])
 
     
-    // edit stuff
-    const [editWindow, setEditWindow] = useState(false)
-    const [currentEditStuffId, setCurrentEditStuffId] = useState("")
-
-    const editStuff = () => {
-        if (date !== "" && stuff !== "" && amount !== 0) {
-            setDoc(doc(props.db, databaseLocation, currentEditStuffId), {
-                date: date,
-                stuff: stuff,
-                amount: parseFloat(amount),
-                type: forWhat,
-            })
-    
-            // reset to default
-            setDate("")
-            setStuff("")
-            setAmount(0)
-            setForWhat("s")
-            setCurrentEditStuffId("")
-
-            setEditWindow(false)
-        } else {
-            return (
-                alert("Error: Field cannot be empty!")
-            )
-        }
-    }
-    
-
     // delete stuff
     const deleteStuff = (docId) => {
         deleteDoc(doc(props.db, databaseLocation, docId))
@@ -150,20 +150,24 @@ export default (props) => {
 
                             {
                                 type === "i" ?
-                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                    <option value=""></option>
-                                    <option value="Salary">Salary</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                <div>Please choose:&nbsp;
+                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                        <option value=""></option>
+                                        <option value="Salary">Salary</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
                                 :
-                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                    <option value=""></option>
-                                    <option value="Education">Education</option>
-                                    <option value="Groceries">Groceries</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Entertainment">Entertainment</option>
-                                    <option value="Other">Other</option>
-                                </select>
+                                <div>Please choose:&nbsp;
+                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                        <option value=""></option>
+                                        <option value="Education">Education</option>
+                                        <option value="Groceries">Groceries</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
                             }
 
                             <br />
@@ -186,9 +190,33 @@ export default (props) => {
 
                                 <br />
 
-                                <input type="radio" name="type" onChange={() => setForWhat("c")} />For College
+                                <input type="radio" name="type" onChange={() => setType("i")} />Income
                                 <br />
-                                <input type="radio" name="type" onChange={() => setForWhat("s")} />For Spending
+                                <input type="radio" name="type" onChange={() => setType("e")} />Expenses
+
+                                <br />
+
+                                {
+                                    type === "i" ?
+                                    <div>Please choose:&nbsp;
+                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                            <option value=""></option>
+                                            <option value="Salary">Salary</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    :
+                                    <div>Please choose:&nbsp;
+                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                            <option value=""></option>
+                                            <option value="Education">Education</option>
+                                            <option value="Groceries">Groceries</option>
+                                            <option value="Food">Food</option>
+                                            <option value="Entertainment">Entertainment</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                }
 
                                 <br />
 
