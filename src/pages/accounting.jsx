@@ -44,8 +44,11 @@ export default (props) => {
 
     // write stuff
     const writeStuff = () => {
-
-        if (date !== "" && stuff !== "" && amount !== 0) {
+        if (Number.isNaN(parseFloat(amount))) { // make sure amount is a number
+            return (
+                alert("Error: Amount must be a positive integer!")
+            )
+        } else if (date !== "" && stuff !== "" && amount !== 0) {
             addDoc(collection(props.db, databaseLocation), {
                 date: date,
                 dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
