@@ -38,9 +38,16 @@ export default (props) => {
 
     // write stuff
     const writeStuff = () => {
+        // split date into year month day
+        const tempDateArr = date.split("-")
+        const year = tempDateArr[0]
+        const month = tempDateArr[1]
+        const day = tempDateArr[2]
+
         if (date !== "" && stuff !== "" && amount !== 0) {
             addDoc(collection(props.db, databaseLocation), {
                 date: date,
+                dateTimestamp: Timestamp.fromDate(new Date(year, month, day)),
                 stuff: stuff,
                 amount: type=="i"?parseFloat(amount):-parseFloat(amount), // positive for i (income), negative for e (expenses)
                 type: forWhat,
@@ -99,7 +106,7 @@ export default (props) => {
 
     useEffect(() => { // use useEffect to prevent infinite re-render
         setTimeout(() => {
-            const q = query(collection(props.db, databaseLocation), orderBy("date", "desc"))  // desc and asc
+            const q = query(collection(props.db, databaseLocation), orderBy("dateTimestamp", "desc"))  // desc and asc
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const tempDocs = []
                 querySnapshot.forEach((doc) => {
@@ -122,6 +129,7 @@ export default (props) => {
     
     // delete stuff
     const deleteStuff = (docId) => {
+        console.log(docId)
         deleteDoc(doc(props.db, databaseLocation, docId))
     }
 
@@ -130,10 +138,10 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <h3>Accounting</h3>
+                        <h3>{currentAccountingName}</h3>
 
                         <form>
-                            Date: <input value={date} onChange={(e) => setDate(e.target.value)} />
+                            Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                             &nbsp; {/*space*/}
                             Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
                             &nbsp; {/*space*/}

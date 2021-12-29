@@ -36,11 +36,9 @@ export default (props) => {
     const [newAccountingForm, setNewAccountingForm] = useState(false)
     const [newAccountingName, setNewAccountingName] = useState("")
 
-    // read all collection of this user
     const databaseLocation = "users_stuff"
 
     const [signedIn, setSignedIn] = useState(false)
-    // const [count, setCount] = useState(0)
 
     onAuthStateChanged(props.auth, (user) => {
         if (user) {
@@ -53,6 +51,7 @@ export default (props) => {
         }
     })
 
+    // get all docs for nav(menu)
     const [collections, setCollections] = useState([])
     const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
     
@@ -108,6 +107,8 @@ export default (props) => {
                 props.signedIn ?
                     <div>
                         <Link to="/">Home</Link>
+                        &nbsp; {/*space*/}
+                        <Link to="/settings">Settings</Link>
                         &nbsp; {/*space*/}
 
                         {

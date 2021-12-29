@@ -38,8 +38,7 @@ import Menu from "./components/menu.jsx"
 // pages
 import Home from "./pages/home.jsx"
 import Accounting from "./pages/accounting.jsx"
-import Chase from "./pages/chase.jsx"
-// import Test from "./pages/test.jsx"
+import Settings from "./pages/settings.jsx"
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -154,6 +153,10 @@ function App() {
 
       <Route path="/accounting/:accountingName">
         <Accounting signedIn={signedIn} db={db} />
+      </Route>
+
+      <Route path="/settings">
+        <Settings signedIn={signedIn} db={db} auth={auth} />
       </Route>
 
     </div>

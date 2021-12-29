@@ -1,0 +1,91 @@
+import React, { useState, useEffect } from "react"
+
+// library
+import {
+    getAuth,
+    signInWithPopup,
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    signOut,
+    setPersistence,
+    browserLocalPersistence,
+    getUser
+} from "firebase/auth";
+import {
+    connectFirestoreEmulator,
+    getFirestore,
+    limit,
+    query,
+    setDoc,
+    collection,
+    getDocs,
+    doc,
+    addDoc,
+    Timestamp,
+    onSnapshot,
+    orderBy,
+    deleteDoc,
+    serverTimestamp,
+    where
+} from 'firebase/firestore';
+
+export default (props) => {
+
+    const databaseLocation = "users_stuff"
+    const [signedIn, setSignedIn] = useState(false)
+    
+    // get all docs for nav(menu)
+    const [collections, setCollections] = useState([])
+    const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
+    
+    useEffect(() => {
+        setTimeout(() => {
+            const userId = window.localStorage.getItem("uid")
+            const q = query(collection(props.db, databaseLocation), where("uid", "==", userId))
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const tempCollection = []
+                querySnapshot.forEach((doc) => {
+                    const temp = doc.data().collections // an array
+                    for (let i = 0; i < temp.length; ++i) {
+                        tempCollection.push(temp[i])
+                    }
+
+                    // get current user data for createNewCollection() to use
+                    const tempCurrentUserData = []
+                    tempCurrentUserData.push(doc.data().uid)
+                    tempCurrentUserData.push(doc.data().email)
+                    tempCurrentUserData.push(doc.data().userRegTime)
+                    setCurrentUserData(tempCurrentUserData)
+                }) // technically should only run once
+    
+                setCollections(tempCollection)
+
+            })
+            // console.log(signedIn)
+        }, 100);
+    }, [props.signedIn, signedIn])
+
+    // delete stuff
+    const deleteStuff = (docId) => {
+        deleteDoc(doc(props.db, databaseLocation, docId))
+    }
+    
+    return (
+        <div>
+            <h3>Settings</h3>
+
+            <p>Your accounting documents:</p>
+            <br />
+
+            {
+                collections.map((collection) =>
+                    <div>
+                        <p>{collection}</p>
+                        <button>Edit name</button>&nbsp;
+                        <button>Delete</button>&nbsp;
+                    </div>
+                )
+            }
+        </div>
+    )
+}
