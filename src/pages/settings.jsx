@@ -31,11 +31,14 @@ import {
 
 export default (props) => {
 
+    const userId = window.localStorage.getItem("uid")
     const databaseLocation = "users_stuff"
+    
     const [signedIn, setSignedIn] = useState(false)
     
     // get all docs for nav(menu)
     const [collections, setCollections] = useState([])
+    const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
     
     useEffect(() => {
         setTimeout(() => {
@@ -49,9 +52,16 @@ export default (props) => {
                         tempCollection.push(temp[i])
                     }
 
+                    // get current user data for createNewCollection() to use
+                    const tempCurrentUserData = []
+                    tempCurrentUserData.push(doc.data().uid)
+                    tempCurrentUserData.push(doc.data().email)
+                    tempCurrentUserData.push(doc.data().userRegTime)
+                    setCurrentUserData(tempCurrentUserData)
                 }) // technically should only run once
     
                 setCollections(tempCollection)
+
             })
             // console.log(signedIn)
         }, 100);
@@ -63,20 +73,33 @@ export default (props) => {
     const deleteStuff = (collectionToBeDeleted) => {
         const indexOfCollectionToBeDeleted = collections.indexOf(collectionToBeDeleted)
         // delete the collection from the collections state
-        console.log(collections)
+        // console.log(collections)
         if (indexOfCollectionToBeDeleted > -1) {
             const tempCollections = collections
             tempCollections.splice(indexOfCollectionToBeDeleted, 1)  // 1 means only one item
             setCollections(tempCollections)
         }
-        console.log(collections)
+        // console.log(collections)
         
         // replace the collection with the exact same collections but without the collection that is being deleted
+        setDoc(doc(props.db, databaseLocation, userId), {
+            uid: currentUserData[0],
+            email: currentUserData[1],
+            userRegTime: currentUserData[2],
+            collections: collections
+        })
 
-        
-        // delete every doc in the collection
-
-        
+        // to grab a list of all documents in the collectionToBeDeleted
+        const collectionLocation = "users_stuff/" + currentUserData[0] + "/" + collectionToBeDeleted
+        const q = query(collection(props.db, collectionLocation), orderBy("dateRecorded", "desc")) // i use dateRecorded because everything must have a dateRecorded
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            // delete every doc in the collection
+            querySnapshot.forEach((docu) => {
+                console.log(docu.id)
+                console.log("hi")
+                deleteDoc(doc(props.db, collectionLocation, docu.id))
+            })
+        })
     }
     
     return (
@@ -84,7 +107,6 @@ export default (props) => {
             <h3>Settings</h3>
 
             <p>Your accounting documents:</p>
-            <br />
 
             {
                 collections.map((collection) =>

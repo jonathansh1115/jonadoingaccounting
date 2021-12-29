@@ -109,7 +109,7 @@ export default (props) => {
     // read stuff: for getting multiple doc in a collection
     const [docs, setDocs] = useState([])
 
-    useEffect(() => { // use useEffect to prevent infinite re-render
+    useEffect(() => {
         setTimeout(() => {
             const q = query(collection(props.db, databaseLocation), orderBy("dateTimestamp", "desc"))  // desc and asc
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -281,10 +281,6 @@ export default (props) => {
                     </div>
                     :
                     <div>
-                        <br />
-                        <img src="https://media.giphy.com/media/YOkrK8agZLEk2cXeLi/giphy.gif" />
-                        <br />
-                        <h4>pls sign in</h4>
                     </div>
             }
         </div>
