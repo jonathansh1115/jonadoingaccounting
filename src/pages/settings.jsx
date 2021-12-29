@@ -2,16 +2,6 @@ import React, { useState, useEffect } from "react"
 
 // library
 import {
-    getAuth,
-    signInWithPopup,
-    GoogleAuthProvider,
-    onAuthStateChanged,
-    signOut,
-    setPersistence,
-    browserLocalPersistence,
-    getUser
-} from "firebase/auth";
-import {
     connectFirestoreEmulator,
     getFirestore,
     limit,
@@ -36,7 +26,7 @@ export default (props) => {
     
     const [signedIn, setSignedIn] = useState(false)
     
-    // get all docs for nav(menu)
+    // get all docs
     const [collections, setCollections] = useState([])
     const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
     
@@ -68,7 +58,10 @@ export default (props) => {
     }, [props.signedIn, signedIn])
 
 
-    // remove the collection in the "collections" object and delete every doc in 
+    // edit collection name
+    
+    
+    // delete a collection: remove the collection in the "collections" object and delete every doc in 
     // the collection, ie the collection itself isnt deleted
     const deleteStuff = (collectionToBeDeleted) => {
         const indexOfCollectionToBeDeleted = collections.indexOf(collectionToBeDeleted)
@@ -112,7 +105,6 @@ export default (props) => {
                 collections.map((collection) =>
                     <div>
                         <p>{collection}</p>
-                        <button>Edit name</button>&nbsp;
                         <button onClick={() => deleteStuff(collection)}>Delete</button>&nbsp;
                     </div>
                 )

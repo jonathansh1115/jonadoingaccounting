@@ -134,6 +134,8 @@ export default (props) => {
                                                             }}>Submit</button>
                                     &nbsp; {/*space*/}
                                     <button onClick={() => { setNewAccountingForm(false) }}>Cancel</button>
+                                    <br />
+                                    Note: Choose the name wisely, once created, you will not be able to edit its name. You can, however, delete it from the Settings tab.
                                 </form>
                                 :
                                 <div></div>
