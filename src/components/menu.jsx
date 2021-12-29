@@ -82,6 +82,8 @@ export default (props) => {
         }, 100);
     }, [props.signedIn, signedIn])
     
+
+    //  create new collection (accounting page)
     const createNewCollection = (collectionName) => {
         // add to on screen "collections"(the "collections" state)
         let tempCollection = collections

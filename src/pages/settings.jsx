@@ -36,7 +36,6 @@ export default (props) => {
     
     // get all docs for nav(menu)
     const [collections, setCollections] = useState([])
-    const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
     
     useEffect(() => {
         setTimeout(() => {
@@ -50,24 +49,34 @@ export default (props) => {
                         tempCollection.push(temp[i])
                     }
 
-                    // get current user data for createNewCollection() to use
-                    const tempCurrentUserData = []
-                    tempCurrentUserData.push(doc.data().uid)
-                    tempCurrentUserData.push(doc.data().email)
-                    tempCurrentUserData.push(doc.data().userRegTime)
-                    setCurrentUserData(tempCurrentUserData)
                 }) // technically should only run once
     
                 setCollections(tempCollection)
-
             })
             // console.log(signedIn)
         }, 100);
     }, [props.signedIn, signedIn])
 
-    // delete stuff
-    const deleteStuff = (docId) => {
-        deleteDoc(doc(props.db, databaseLocation, docId))
+
+    // remove the collection in the "collections" object and delete every doc in 
+    // the collection, ie the collection itself isnt deleted
+    const deleteStuff = (collectionToBeDeleted) => {
+        const indexOfCollectionToBeDeleted = collections.indexOf(collectionToBeDeleted)
+        // delete the collection from the collections state
+        console.log(collections)
+        if (indexOfCollectionToBeDeleted > -1) {
+            const tempCollections = collections
+            tempCollections.splice(indexOfCollectionToBeDeleted, 1)  // 1 means only one item
+            setCollections(tempCollections)
+        }
+        console.log(collections)
+        
+        // replace the collection with the exact same collections but without the collection that is being deleted
+
+        
+        // delete every doc in the collection
+
+        
     }
     
     return (
@@ -82,7 +91,7 @@ export default (props) => {
                     <div>
                         <p>{collection}</p>
                         <button>Edit name</button>&nbsp;
-                        <button>Delete</button>&nbsp;
+                        <button onClick={() => deleteStuff(collection)}>Delete</button>&nbsp;
                     </div>
                 )
             }

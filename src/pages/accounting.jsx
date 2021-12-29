@@ -36,18 +36,19 @@ export default (props) => {
     const [amount, setAmount] = useState(0)          // Number
     const [forWhat, setForWhat] = useState("")       // String: types: Education, 
 
+    // split date into year month day
+    const tempDateArr = date.split("-")
+    const year = tempDateArr[0]
+    const month = tempDateArr[1]
+    const day = tempDateArr[2]
+
     // write stuff
     const writeStuff = () => {
-        // split date into year month day
-        const tempDateArr = date.split("-")
-        const year = tempDateArr[0]
-        const month = tempDateArr[1]
-        const day = tempDateArr[2]
 
         if (date !== "" && stuff !== "" && amount !== 0) {
             addDoc(collection(props.db, databaseLocation), {
                 date: date,
-                dateTimestamp: Timestamp.fromDate(new Date(year, month, day)),
+                dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
                 stuff: stuff,
                 amount: type=="i"?parseFloat(amount):-parseFloat(amount), // positive for i (income), negative for e (expenses)
                 type: forWhat,
@@ -75,6 +76,7 @@ export default (props) => {
         if (date !== "" && stuff !== "" && amount !== 0) {
             setDoc(doc(props.db, databaseLocation, currentEditStuffId), {
                 date: date,
+                dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
                 stuff: stuff,
                 amount: type=="i"?parseFloat(amount):-parseFloat(amount),
                 type: forWhat,
@@ -129,7 +131,6 @@ export default (props) => {
     
     // delete stuff
     const deleteStuff = (docId) => {
-        console.log(docId)
         deleteDoc(doc(props.db, databaseLocation, docId))
     }
 
@@ -189,7 +190,7 @@ export default (props) => {
                             editWindow ?
                             <form>
                                 <h4>Edit:</h4>
-                                Date: <input value={date} onChange={(e) => setDate(e.target.value)} />
+                                Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                                 &nbsp; {/*space*/}
                                 Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
                                 &nbsp; {/*space*/}
