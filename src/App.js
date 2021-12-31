@@ -39,6 +39,7 @@ import Menu from "./components/menu.jsx"
 import Home from "./pages/home.jsx"
 import Accounting from "./pages/accounting.jsx"
 import Settings from "./pages/settings.jsx"
+import JonaChase from "./pages/chase.jsx"
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -157,6 +158,10 @@ function App() {
 
       <Route path="/settings">
         <Settings signedIn={signedIn} db={db} auth={auth} />
+      </Route>
+
+      <Route exact path="/jonachase">
+        <JonaChase signedIn={signedIn} db={db} />
       </Route>
 
     </div>

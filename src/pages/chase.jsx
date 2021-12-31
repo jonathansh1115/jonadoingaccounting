@@ -21,7 +21,7 @@ import {
 export default (props) => {
 
     const userId = window.localStorage.getItem("uid")
-    const databaseLocation = "users_stuff/" + userId + "/chase"
+    const databaseLocation = "users_stuff/" + userId + "/mychase"
     
     const [date, setDate] = useState("")             // String
     const [stuff, setStuff] = useState("")           // String
@@ -121,7 +121,7 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <h3>Chase</h3>
+                        <h3>Jona Chase</h3>
 
                         <form>
                             Date: <input value={date} onChange={(e) => setDate(e.target.value)} />
