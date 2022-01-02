@@ -66,7 +66,11 @@ export default (props) => {
     const month = tempDateArr[1]
     const day = tempDateArr[2]
 
-    // write stuff
+    /**
+     * write stuff
+     * 
+     * @returns Error if input is invalid
+     */
     const writeStuff = () => {
         if (Number.isNaN(parseFloat(amount))) { // make sure amount is a number
             return (
@@ -94,8 +98,10 @@ export default (props) => {
         }
     }
 
-
-    // edit stuff
+    /**
+     * edit stuff
+     * 
+     */
     const [editWindow, setEditWindow] = useState(false)
     const [currentEditStuffId, setCurrentEditStuffId] = useState("")
 
@@ -130,7 +136,10 @@ export default (props) => {
     //     console.log("Current data: ", doc.data())
     // })
 
-    // read stuff: for getting multiple doc in a collection
+    /**
+     * read stuff: for getting multiple doc in a collection
+     * 
+     */
     const [docs, setDocs] = useState([])
     const [num, setNum] = useState(0)
     useEffect(() => {
@@ -159,13 +168,14 @@ export default (props) => {
             })
         }, 100);
     }, [currentAccountingName])
-
     
-    // delete stuff
+    /**
+     * delete stuff
+     * @param {*} docId 
+     */
     const deleteStuff = (docId) => {
         deleteDoc(doc(props.db, databaseLocation, docId))
     }
-
 
     let data = [0, 0, 0, 0, 0]
     const setSummaryData = (monthOfTheDocCurrentlyReading, amount) => {

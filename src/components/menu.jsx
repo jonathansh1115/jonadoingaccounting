@@ -51,7 +51,10 @@ export default (props) => {
         }
     })
 
-    // get all docs for nav(menu)
+    /**
+     * get all docs for nav(menu)
+     * 
+     */
     const [collections, setCollections] = useState([])
     const [currentUserData, setCurrentUserData] = useState([]) // 0: uid; 1: email; 2: userRegTime
     
@@ -83,7 +86,11 @@ export default (props) => {
     }, [props.signedIn, signedIn])
     
 
-    //  create new collection (accounting page)
+    /**
+     * create new collection (accounting page)
+     * 
+     * @param {*} collectionName 
+     */
     const createNewCollection = (collectionName) => {
         // add to on screen "collections"(the "collections" state)
         let tempCollection = collections

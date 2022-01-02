@@ -66,7 +66,12 @@ function App() {
   const [userId, setUserId] = useState("")
   const [newUser, setNewUser] = useState(false)
 
-  // add new user function
+  /**
+   * add new user function
+   * 
+   * @param {*} userId 
+   * @param {*} email 
+   */
   const addNewUser = (userId, email) => {
     // create new doc in users_stuff collection
     setDoc(doc(db, "users_stuff", userId), {
@@ -78,7 +83,10 @@ function App() {
     setNewUser(true)
   }
 
-  // sign in function
+  /**
+   * sign in function
+   * 
+   */
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -106,13 +114,19 @@ function App() {
       });
   }
 
-  // sign out function
+  /**
+   * Sign out function
+   * 
+   */
   const signOutWithGoogle = () => {
     signOut(auth)
     window.localStorage.removeItem("uid")
   }
 
-  // control sign in sign out status function
+  /**
+   * Control sign in sign out status function
+   * 
+   */
   const [signedIn, setSignedIn] = useState(false)
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -124,7 +138,10 @@ function App() {
     }
   })
 
-  // Constantly make sure displayName and userId is working
+  /**
+   * Constantly make sure displayName and userId is working
+   * 
+   */
   if (signedIn) {
     setTimeout(() => {
       setName(auth.currentUser.displayName)
