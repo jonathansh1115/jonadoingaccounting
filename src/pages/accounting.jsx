@@ -43,7 +43,8 @@ export default (props) => {
     }
     getListOfMonthsToSummary(currentMonth)
     // get the actual data of the five months
-    const [dataOfMonthsToSummary, setDataOfMonthsToSummary] = useState([0, 0, 0, 0, 0])
+    const [past5MonthsIncomes, setPast5MonthsIncomes] = useState([0, 0, 0, 0, 0])
+    const [past5MonthsExpenses, setPast5MonthsExpenses] = useState([0, 0, 0, 0, 0])
 
 
     const location = useLocation().pathname
@@ -99,7 +100,7 @@ export default (props) => {
     }
 
     /**
-     * edit stuff
+     * Edit stuff
      * 
      */
     const [editWindow, setEditWindow] = useState(false)
@@ -131,7 +132,11 @@ export default (props) => {
         }
     }
 
-    // for only getting one doc
+    /**
+     * For only getting one doc.
+     *
+     * 
+     */
     // const unsubscribe = onSnapshot(doc(props.db, "users_stuff/RPOpC81pnGfjWcU0kRRUsyrfEU12/chase", "WJRatHWgPfo6vL51JQ4y"), (doc) => {
     //     console.log("Current data: ", doc.data())
     // })
@@ -141,26 +146,27 @@ export default (props) => {
      * 
      */
     const [docs, setDocs] = useState([])
-    const [num, setNum] = useState(0)
     useEffect(() => {
         setTimeout(() => {
             const q = query(collection(props.db, databaseLocation), orderBy("dateTimestamp", "desc"))  // desc and asc
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const tempDocs = []
                 querySnapshot.forEach((doc) => {
+                    const type = doc.data().type
                     const tempObj = {
                         docId: doc.id,
                         date: doc.data().date,
                         stuff: doc.data().stuff,
                         amount: doc.data().amount,
-                        type: doc.data().type,
+                        // type: type.substring(1, type.length), // print out without the first letter
+                        type: type,
                         dateRecorded: doc.data().dateRecorded
                     }
                     tempDocs.push(tempObj)
                     
                     // if the month of the doc we are currently reading is in the list of months to be in the summary
                     const monthOfTheDocCurrentlyReading = parseInt(doc.data().date.split("-")[1])
-                    setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount)
+                    setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount, doc.data().type[0])
                     
                 })
                 
@@ -177,29 +183,28 @@ export default (props) => {
         deleteDoc(doc(props.db, databaseLocation, docId))
     }
 
-    let data = [0, 0, 0, 0, 0]
-    const setSummaryData = (monthOfTheDocCurrentlyReading, amount) => {
+    /**
+     * Collect data for summary.
+     * 
+     */
+    let incomes = [0, 0, 0, 0, 0]
+    let expenses = [0, 0, 0, 0, 0]
+    const setSummaryData = (monthOfTheDocCurrentlyReading, amount, type) => {
         // if the month of the doc we are currently reading is in the list of months to be in the summary
-        // stupidest code i ever written
         if (listOfMonthsToSummary.includes(monthOfTheDocCurrentlyReading)) {
-            if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[0]) {
-                // meaning current doc month is also current month
-                data[0] += amount
-            } else if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[1]) {
-                // meaning current doc month is last month
-                data[1] += amount
-            } else if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[2]) {
-                // meaning current doc month is last last month
-                data[2] += amount
-            } else if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[3]) {
-                // meaning current doc month is last month
-                data[3] += amount
-            } else if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[4]) {
-                // meaning current doc month is last month
-                data[4] += amount
+            for (let i = 0; i < 5; ++i) {
+                if (monthOfTheDocCurrentlyReading == listOfMonthsToSummary[i]) {
+                    // meaning current doc month is also current month
+                    if (type === "i") {
+                        incomes[i] += amount
+                    } else if (type === "e") {
+                        expenses[i] += amount
+                    }
+                }
             }
         }
-        setDataOfMonthsToSummary(data)
+        setPast5MonthsIncomes(incomes)
+        setPast5MonthsExpenses(expenses)
     }
 
 
@@ -231,19 +236,19 @@ export default (props) => {
                                 <div>Please choose:&nbsp;
                                     <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                         <option value=""></option>
-                                        <option value="Salary">Salary</option>
-                                        <option value="Other Income">Other Income</option>
+                                        <option value="iSalary">Salary</option>
+                                        <option value="iOther Income">Other Income</option>
                                     </select>
                                 </div>
                                 :
                                 <div>Please choose:&nbsp;
                                     <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                         <option value=""></option>
-                                        <option value="Education">Education</option>
-                                        <option value="Groceries">Groceries</option>
-                                        <option value="Food">Food</option>
-                                        <option value="Entertainment">Entertainment</option>
-                                        <option value="Other Expenses">Other Expenses</option>
+                                        <option value="eEducation">Education</option>
+                                        <option value="eGroceries">Groceries</option>
+                                        <option value="eFood">Food</option>
+                                        <option value="eEntertainment">Entertainment</option>
+                                        <option value="eOther Expenses">Other Expenses</option>
                                     </select>
                                 </div>
                             }
@@ -279,19 +284,19 @@ export default (props) => {
                                     <div>Please choose:&nbsp;
                                         <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                             <option value=""></option>
-                                            <option value="Salary">Salary</option>
-                                            <option value="Other Income">Other Income</option>
+                                            <option value="iSalary">Salary</option>
+                                            <option value="iOther Income">Other Income</option>
                                         </select>
                                     </div>
                                     :
                                     <div>Please choose:&nbsp;
                                         <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                             <option value=""></option>
-                                            <option value="Education">Education</option>
-                                            <option value="Groceries">Groceries</option>
-                                            <option value="Food">Food</option>
-                                            <option value="Entertainment">Entertainment</option>
-                                            <option value="Other Expenses">Other Expenses</option>
+                                            <option value="eEducation">Education</option>
+                                            <option value="eGroceries">Groceries</option>
+                                            <option value="eFood">Food</option>
+                                            <option value="eEntertainment">Entertainment</option>
+                                            <option value="eOther Expenses">Other Expenses</option>
                                         </select>
                                     </div>
                                 }
@@ -307,7 +312,10 @@ export default (props) => {
                             </div>
                         }
 
-                        <Report dataOfMonthsToSummary={dataOfMonthsToSummary} />
+                        <Report
+                            past5MonthsIncomes={past5MonthsIncomes}
+                            past5MonthsExpenses={past5MonthsExpenses} 
+                            />
 
                         <br />
 
@@ -350,6 +358,7 @@ export default (props) => {
                     </div>
                     :
                     <div>
+                        pls sign in
                     </div>
             }
         </div>

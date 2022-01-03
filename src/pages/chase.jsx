@@ -82,7 +82,10 @@ export default (props) => {
     }, [])
 
     
-    // edit stuff
+    /**
+     * Edit stuff
+     * 
+     */
     const [editWindow, setEditWindow] = useState(false)
     const [currentEditStuffId, setCurrentEditStuffId] = useState("")
 

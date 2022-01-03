@@ -57,12 +57,19 @@ export default (props) => {
         }, 100);
     }, [props.signedIn, signedIn])
 
-
-    // edit collection name
+    /**
+     * Edit collection name
+     * 
+     * @param {*} collectionToBeDeleted 
+     */
+    // TODO
     
-    
-    // delete a collection: remove the collection in the "collections" object and delete every doc in 
-    // the collection, ie the collection itself isnt deleted
+    /**
+     * Delete a collection: remove the collection in the "collections" object and delete every doc in 
+     * the collection, ie the collection itself isnt deleted
+     * 
+     * @param {*} collectionToBeDeleted 
+     */
     const deleteStuff = (collectionToBeDeleted) => {
         const indexOfCollectionToBeDeleted = collections.indexOf(collectionToBeDeleted)
         // delete the collection from the collections state
