@@ -111,7 +111,7 @@ export default (props) => {
             {
                 collections.map((collection) =>
                     <div>
-                        <p>{collection}</p>
+                        <p>{collection.substring(1, collection.length)}</p>
                         <button onClick={() => deleteStuff(collection)}>Delete</button>&nbsp;
                     </div>
                 )

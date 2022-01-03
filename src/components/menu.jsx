@@ -33,8 +33,9 @@ import {
 
 export default (props) => {
 
-    const [newAccountingForm, setNewAccountingForm] = useState(false)
-    const [newAccountingName, setNewAccountingName] = useState("")
+    const [newTabForm, setNewTabForm] = useState(false)
+    const [newTabName, setNewTabName] = useState("")
+    const [newTabType, setNewTabType] = useState("") // a: accounting, p: stock portfolio, t: 2-in-1
 
     const databaseLocation = "users_stuff"
 
@@ -79,7 +80,6 @@ export default (props) => {
                 }) // technically should only run once
     
                 setCollections(tempCollection)
-
             })
             // console.log(signedIn)
         }, 100);
@@ -87,14 +87,15 @@ export default (props) => {
     
 
     /**
-     * create new collection (accounting page)
+     * Create new collection (accounting page)
      * 
-     * @param {*} collectionName 
+     * @param {*} collectionName - new tab name
+     * @param {*} collectionType - new tab type
      */
-    const createNewCollection = (collectionName) => {
+    const createNewCollection = (collectionName, collectionType) => {
         // add to on screen "collections"(the "collections" state)
         let tempCollection = collections
-        tempCollection.push(collectionName)
+        tempCollection.push(collectionType + collectionName)
         setCollections(tempCollection)
 
         const userIdLOCAL = window.localStorage.getItem("uid")
@@ -106,10 +107,26 @@ export default (props) => {
             userRegTime: currentUserData[2],
             collections: collections
         })
-        setDoc(doc(props.db, "users_stuff/" +userIdLOCAL + "/" + collectionName, "dummy_doc_pls_ignore"), {
+        setDoc(doc(props.db, "users_stuff/" + userIdLOCAL + "/" + collectionType + collectionName, "dummy_doc_pls_ignore"), {
         })
+
+        // reset newtabname and newtabtype
+        setNewTabName("")
+        setNewTabType("")
     }
 
+    /**
+     * Get the type of page to be inserted in url
+     * 
+     * @param {*} type 
+     * @returns accounting for "a"; portfolio for "p"; twoinone for "t"
+     */
+    const getType = (type) => {
+        if (type === "a") return "accounting"
+        if (type === "p") return "portfolio"
+        if (type === "t") return "twoinone"
+    }
+    
     return (
         <div>
             {
@@ -123,30 +140,36 @@ export default (props) => {
                         {
                             collections.map((collection) =>
                                 <div>
-                                    <Link to={"/accounting/" + collection}>{collection}</Link>
+                                    <Link to={"/" + getType(collection[0]) + "/" + collection.substring(1, collection.length)}>{collection.substring(1, collection.length)}</Link>
                                 </div>
                             )
                         }
 
-                        <button onClick={() => setNewAccountingForm(true)}>Create new</button>
+                        <button onClick={() => setNewTabForm(true)}>Create new</button>
 
                         {
-                            newAccountingForm ?
-                                <form>
-                                    New accounting: <input value={newAccountingName} onChange={(e) => setNewAccountingName(e.target.value)} />
-                                    &nbsp; {/*space*/}
-                                    <button onClick={(e) => { e.preventDefault();
-                                                              createNewCollection(newAccountingName); 
-                                                              setNewAccountingForm(false);
-                                                            }}>Submit</button>
-                                    &nbsp; {/*space*/}
-                                    <button onClick={() => { setNewAccountingForm(false) }}>Cancel</button>
-                                    <br />
-                                    Note: Choose the name wisely, once created, you will not be able to edit its name. You can, however, delete it from the Settings tab.
-                                </form>
-                                :
-                                <div></div>
+                            newTabForm ?
+                            <form>
+                                <input type="radio" name="type" onChange={() => setNewTabType("a")} />Accounting
+                                <input type="radio" name="type" onChange={() => setNewTabType("p")} />Stock Portfolio
+                                <input type="radio" name="type" onChange={() => setNewTabType("t")} />2-in-1
+                                
+                                <br />
+                                
+                                Name: <input value={newTabName} onChange={(e) => setNewTabName(e.target.value)} />
+
+                                &nbsp; {/*space*/}
+                                <button onClick={(e) => { e.preventDefault();
+                                                            createNewCollection(newTabName, newTabType); 
+                                                            setNewTabForm(false);
+                                                        }}>Submit</button>
+                                &nbsp; {/*space*/}
+                                <button onClick={() => { setNewTabForm(false) }}>Cancel</button>
+                            </form>
+                            :
+                            <div></div>
                         }
+
                     </div>
                     :
                     <div>
@@ -154,41 +177,6 @@ export default (props) => {
                     </div>
             }
 
-
-
         </div>
     )
-
-    // return (
-
-    //     <div>
-
-    //         <Link to="/">Home</Link>
-    //         &nbsp; {/*space*/}
-
-    //         {
-    //             collections.map((collection) =>
-    //                 <div>
-    //                     <Link to={"/" + collection}>{collection}</Link>
-    //                 </div>
-    //             )
-    //         }
-
-    //         <button onClick={() => setNewAccountingForm(true)}>Create new</button>
-
-    //         {
-    //             newAccountingForm ?
-    //                 <form>
-    //                     New accounting: <input value={newAccountingName} onChange={(e) => setNewAccountingName(e.target.value)} />
-    //                     &nbsp; {/*space*/}
-    //                     <button onClick={() => { setNewAccountingForm(false) }}>Submit</button>
-    //                     &nbsp; {/*space*/}
-    //                     <button onClick={() => { setNewAccountingForm(false) }}>Cancel</button>
-    //                 </form>
-    //                 :
-    //                 <div></div>
-    //         }
-
-    //     </div>
-    // )
 }

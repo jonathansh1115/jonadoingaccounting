@@ -107,12 +107,25 @@ export default (props) => {
     const [currentEditStuffId, setCurrentEditStuffId] = useState("")
 
     const editStuff = () => {
+        // make sure amount sign is correct, ie positive for income and negative for expenses
+        let tempAmount = amount
+        if (type === "i") {
+            if (tempAmount < 0) {
+                tempAmount = -tempAmount
+            }
+        } else if (type === "e") {
+            if (tempAmount > 0) {
+                tempAmount = -tempAmount
+            }
+        }
+
+        // the actual edit function
         if (date !== "" && stuff !== "" && amount !== 0) {
             setDoc(doc(props.db, databaseLocation, currentEditStuffId), {
                 date: date,
                 dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
                 stuff: stuff,
-                amount: type=="i"?parseFloat(amount):-parseFloat(amount),
+                amount: tempAmount,
                 type: forWhat,
                 dateRecorded: dateRecorded
             })
@@ -268,7 +281,7 @@ export default (props) => {
                                 &nbsp; {/*space*/}
                                 Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
                                 &nbsp; {/*space*/}
-                                Amount: <input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                                Amount: <input value={amount<0?-amount:amount} onChange={(e) => setAmount(e.target.value)} />
                                 &nbsp; {/*space*/}
 
                                 <br />
@@ -312,10 +325,10 @@ export default (props) => {
                             </div>
                         }
 
-                        <Report
+                        {/* <Report
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
-                            />
+                            /> */}
 
                         <br />
 

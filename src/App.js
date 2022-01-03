@@ -38,6 +38,8 @@ import Menu from "./components/menu.jsx"
 // pages
 import Home from "./pages/home.jsx"
 import Accounting from "./pages/accounting.jsx"
+import Portfolio from "./pages/portfolio.jsx"
+import TwoInOne from "./pages/twoinone.jsx"
 import Settings from "./pages/settings.jsx"
 import JonaChase from "./pages/chase.jsx"
 
@@ -171,6 +173,14 @@ function App() {
 
       <Route path="/accounting/:accountingName">
         <Accounting signedIn={signedIn} db={db} />
+      </Route>
+
+      <Route path="/twoinone/:twoinoneName">
+        <TwoInOne signedIn={signedIn} db={db} />
+      </Route>
+
+      <Route path="/portfolio/:portfolioName">
+        <Portfolio signedIn={signedIn} db={db} />
       </Route>
 
       <Route path="/settings">
