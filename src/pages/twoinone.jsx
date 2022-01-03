@@ -247,16 +247,16 @@ export default (props) => {
                                 <div>Please choose:&nbsp;
                                     <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                         <option value=""></option>
-                                        <option value="cFor college">For college</option>
-                                        <option value="sFor spending">For spending</option>
+                                        <option value="iFor college">For college</option>
+                                        <option value="iFor spending">For spending</option>
                                     </select>
                                 </div>
                                 :
                                 <div>Please choose:&nbsp;
                                     <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                         <option value=""></option>
-                                        <option value="cFor college">For college</option>
-                                        <option value="sFor spending">For spending</option>
+                                        <option value="eFor college">For college</option>
+                                        <option value="eFor spending">For spending</option>
                                     </select>
                                 </div>
                             }
@@ -292,16 +292,16 @@ export default (props) => {
                                     <div>Please choose:&nbsp;
                                         <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                             <option value=""></option>
-                                            <option value="cFor college">For college</option>
-                                            <option value="sFor spending">For spending</option>
+                                            <option value="iFor college">For college</option>
+                                            <option value="iFor spending">For spending</option>
                                         </select>
                                     </div>
                                     :
                                     <div>Please choose:&nbsp;
                                         <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
                                             <option value=""></option>
-                                            <option value="cFor college">For college</option>
-                                            <option value="sFor spending">For spending</option>
+                                            <option value="eFor college">For college</option>
+                                            <option value="eFor spending">For spending</option>
                                         </select>
                                     </div>
                                 }
