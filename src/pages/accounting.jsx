@@ -171,7 +171,6 @@ export default (props) => {
                         date: doc.data().date,
                         stuff: doc.data().stuff,
                         amount: doc.data().amount,
-                        // type: type.substring(1, type.length), // print out without the first letter
                         type: type,
                         dateRecorded: doc.data().dateRecorded
                     }
@@ -346,7 +345,7 @@ export default (props) => {
                                         <td key={oneDoc.docId}>{oneDoc.date}</td>
                                         <td>{oneDoc.stuff}</td>
                                         <td>{oneDoc.amount}</td>
-                                        <td>{oneDoc.type}</td>
+                                        <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
 
                                         <td>
                                             <button onClick={() => {
