@@ -178,6 +178,7 @@ export default (props) => {
                     // if the month of the doc we are currently reading is in the list of months to be in the summary
                     const monthOfTheDocCurrentlyReading = parseInt(doc.data().date.split("-")[1])
                     setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount, doc.data().type[0])
+                    getAccBalance(doc.data().amount)
                     
                 })
                 
@@ -218,6 +219,16 @@ export default (props) => {
         setPast5MonthsExpenses(expenses)
     }
 
+    /**
+         * Get account balance.
+         * 
+         */
+    const [accBalance, setAccBalance]= useState(0)
+    let balance = 0
+    const getAccBalance = (amount) => {
+        balance += amount
+        setAccBalance(balance)
+    }
 
     return (
         <div>
@@ -320,7 +331,7 @@ export default (props) => {
                         <Report
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
-                            />
+                            accBalance={accBalance} />
 
                         <br />
 

@@ -6,6 +6,11 @@ export default (props) => {
         <div>
             <h3>Summary:</h3>
             
+            Account Balance: {props.accBalance}
+
+            <br />
+            <br />
+            
             Past 5 Months' incomes:
             {
                 props.past5MonthsIncomes.map((data) => 
@@ -14,6 +19,8 @@ export default (props) => {
                     </div>
                 )
             }
+
+            <br />
 
             Past 5 Months' expenses:
             {
