@@ -164,17 +164,17 @@ function App() {
 
   // START OF APP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   return (
-    <div className="container-fluid">
+    <div className="container-fluid h-100">
       <div className="row h-100">
         {/* Sidebar */}
-        <div className="col-md-2">
+        <div className="col-md-2 sidebar">
           <Route path="/">
             <Menu signedIn={signedIn} db={db} auth={auth} userId={userId} />
           </Route>
         </div>
         
         {/* All the other stuff */}
-        <div className="col-md-2">
+        <div className="col-md-10">
           <Route exact path="/">
             <Home name={name}
               signedIn={signedIn}
@@ -204,10 +204,6 @@ function App() {
           </Route>
         </div>
       </div>
-
-      
-
-      
 
     </div>
   )

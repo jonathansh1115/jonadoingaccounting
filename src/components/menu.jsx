@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./css/menu.css"
 
 // libraries
 import { Link } from "react-router-dom"
@@ -37,6 +38,10 @@ import {
     InputGroup,
     Table
 } from "reactstrap"
+
+// src
+import home from "./icons/home.png"
+import settings from "./icons/settings.png"
 
 export default (props) => {
 
@@ -139,20 +144,28 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <Link to="/">Home</Link>
-                        &nbsp; {/*space*/}
-                        <Link to="/settings">Settings</Link>
-                        &nbsp; {/*space*/}
+                        <Link to="/">
+                            <div className="tab">
+                                <img src={home} style={{height: "20px"}}/>
+                                <p>&nbsp;Home</p>
+                            </div>
+                        </Link>
+                        
+                        <br />
 
                         {
                             collections.map((collection) =>
-                                <div>
-                                    <Link to={"/" + getType(collection[0]) + "/" + collection.substring(1, collection.length)}>{collection.substring(1, collection.length)}</Link>
-                                </div>
+                                <Link to={"/" + getType(collection[0]) + "/" + collection.substring(1, collection.length)}>
+                                    <div className="tab">
+                                        {collection.substring(1, collection.length)}
+                                    </div>
+                                </Link>
                             )
                         }
 
-                        <button onClick={() => setNewTabForm(true)}>Create new</button>
+                        <div className="tab">
+                            <div onClick={() => setNewTabForm(true)}>Create new</div>
+                        </div>
 
                         {
                             newTabForm ?
@@ -176,6 +189,15 @@ export default (props) => {
                             :
                             <div></div>
                         }
+
+                        <br />
+
+                        <Link to="/settings">
+                            <div className="tab" id="settingsTab">
+                                <img src={settings} style={{height: "20px"}}/>
+                                <p>&nbsp;Settings</p>
+                            </div>
+                        </Link>
 
                     </div>
                     :
