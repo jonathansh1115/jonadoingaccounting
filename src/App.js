@@ -31,6 +31,14 @@ import {
   firestore,
   serverTimestamp
 } from "firebase/firestore"
+import {
+  Button,
+  Input,
+  InputGroupText,
+  InputGroup,
+  Table
+} from "reactstrap"
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 // components
 import Menu from "./components/menu.jsx"
@@ -156,40 +164,50 @@ function App() {
 
   // START OF APP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   return (
-    <div>
+    <div className="container-fluid">
+      <div className="row h-100">
+        {/* Sidebar */}
+        <div className="col-md-2">
+          <Route path="/">
+            <Menu signedIn={signedIn} db={db} auth={auth} userId={userId} />
+          </Route>
+        </div>
+        
+        {/* All the other stuff */}
+        <div className="col-md-2">
+          <Route exact path="/">
+            <Home name={name}
+              signedIn={signedIn}
+              signInWithGoogle={signInWithGoogle}
+              signOutWithGoogle={signOutWithGoogle}
+              newUser={newUser} />
+          </Route>
 
-      {/*aka Navbar*/}
-      <Route path="/">
-        <Menu signedIn={signedIn} db={db} auth={auth} userId={userId} />
-      </Route>
+          <Route path="/accounting/:accountingName">
+            <Accounting signedIn={signedIn} db={db} />
+          </Route>
 
-      <Route exact path="/">
-        <Home name={name}
-          signedIn={signedIn}
-          signInWithGoogle={signInWithGoogle}
-          signOutWithGoogle={signOutWithGoogle}
-          newUser={newUser} />
-      </Route>
+          <Route path="/twoinone/:twoinoneName">
+            <TwoInOne signedIn={signedIn} db={db} />
+          </Route>
 
-      <Route path="/accounting/:accountingName">
-        <Accounting signedIn={signedIn} db={db} />
-      </Route>
+          <Route path="/portfolio/:portfolioName">
+            <Portfolio signedIn={signedIn} db={db} />
+          </Route>
 
-      <Route path="/twoinone/:twoinoneName">
-        <TwoInOne signedIn={signedIn} db={db} />
-      </Route>
+          <Route path="/settings">
+            <Settings signedIn={signedIn} db={db} auth={auth} />
+          </Route>
 
-      <Route path="/portfolio/:portfolioName">
-        <Portfolio signedIn={signedIn} db={db} />
-      </Route>
+          <Route exact path="/jonachase">
+            <JonaChase signedIn={signedIn} db={db} />
+          </Route>
+        </div>
+      </div>
 
-      <Route path="/settings">
-        <Settings signedIn={signedIn} db={db} auth={auth} />
-      </Route>
+      
 
-      <Route exact path="/jonachase">
-        <JonaChase signedIn={signedIn} db={db} />
-      </Route>
+      
 
     </div>
   )
