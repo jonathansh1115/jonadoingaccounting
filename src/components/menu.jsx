@@ -163,8 +163,8 @@ export default (props) => {
                             )
                         }
 
-                        <div className="tab">
-                            <div onClick={() => setNewTabForm(true)}>Create new</div>
+                        <div className="tab" onClick={() => setNewTabForm(true)}>
+                            <div>Create new</div>
                         </div>
 
                         {

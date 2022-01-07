@@ -167,14 +167,14 @@ function App() {
     <div className="container-fluid h-100">
       <div className="row h-100">
         {/* Sidebar */}
-        <div className="col-md-2 sidebar">
+        <div className="col-md-2 col-sm-12 col-xs-12 sidebar">
           <Route path="/">
             <Menu signedIn={signedIn} db={db} auth={auth} userId={userId} />
           </Route>
         </div>
         
         {/* All the other stuff */}
-        <div className="col-md-10">
+        <div className="col-md-10 col-sm-12 col-xs-12 mainscreen">
           <Route exact path="/">
             <Home name={name}
               signedIn={signedIn}

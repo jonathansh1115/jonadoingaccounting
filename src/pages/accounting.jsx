@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./css/accounting.css"
 
 // library
 import {
@@ -20,6 +21,15 @@ import {
     deleteDoc,
     serverTimestamp
 } from 'firebase/firestore';
+// library
+import {
+    Navbar,
+    Button,
+    Input,
+    InputGroupText,
+    InputGroup,
+    Table
+} from "reactstrap"
 
 // components
 import Report from "./components/report.jsx"
@@ -238,145 +248,155 @@ export default (props) => {
                     <div>
                         <h3>{currentAccountingName}</h3>
 
-                        <form>
-                            Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                            &nbsp; {/*space*/}
-                            Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
-                            &nbsp; {/*space*/}
-                            Amount: <input value={amount} onChange={(e) => setAmount(e.target.value)} />
-                            &nbsp; {/*space*/}
-
-                            <br />
-
-                            <input type="radio" name="type" onChange={() => setType("i")} />Income
-                            <br />
-                            <input type="radio" name="type" onChange={() => setType("e")} />Expenses
-
-                            <br />
-
-                            {
-                                type === "i" ?
-                                <div>Please choose:&nbsp;
-                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                        <option value=""></option>
-                                        <option value="iSalary">Salary</option>
-                                        <option value="iOther Income">Other Income</option>
-                                    </select>
-                                </div>
-                                :
-                                <div>Please choose:&nbsp;
-                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                        <option value=""></option>
-                                        <option value="eEducation">Education</option>
-                                        <option value="eGroceries">Groceries</option>
-                                        <option value="eFood">Food</option>
-                                        <option value="eEntertainment">Entertainment</option>
-                                        <option value="eOther Expenses">Other Expenses</option>
-                                    </select>
-                                </div>
-                            }
-
-                            <br />
-
-                            <button onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</button>
-                        </form>
-
-                        <br />
-
-                        {
-                            editWindow ?
-                            <form>
-                                <h4>Edit:</h4>
-                                Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                                &nbsp; {/*space*/}
-                                Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
-                                &nbsp; {/*space*/}
-                                Amount: <input value={amount<0?-amount:amount} onChange={(e) => setAmount(e.target.value)} />
-                                &nbsp; {/*space*/}
-
-                                <br />
-
-                                <input type="radio" name="type" onChange={() => setType("i")} />Income
-                                <br />
-                                <input type="radio" name="type" onChange={() => setType("e")} />Expenses
-
-                                <br />
-
-                                {
-                                    type === "i" ?
-                                    <div>Please choose:&nbsp;
-                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                            <option value=""></option>
-                                            <option value="iSalary">Salary</option>
-                                            <option value="iOther Income">Other Income</option>
-                                        </select>
-                                    </div>
-                                    :
-                                    <div>Please choose:&nbsp;
-                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                            <option value=""></option>
-                                            <option value="eEducation">Education</option>
-                                            <option value="eGroceries">Groceries</option>
-                                            <option value="eFood">Food</option>
-                                            <option value="eEntertainment">Entertainment</option>
-                                            <option value="eOther Expenses">Other Expenses</option>
-                                        </select>
-                                    </div>
-                                }
-
-                                <br />
-
-                                <button onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</button>
-                                &nbsp; {/*space*/}
-                                <button onClick={() => setEditWindow(false)}>Cancel</button>
-                            </form>
-                            :
-                            <div>
-                            </div>
-                        }
-
                         <Report
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
 
-                        <br />
+{/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-md-6 col-sm-12 col-12">
+                                    <form>
+                                        Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                                        &nbsp; {/*space*/}
+                                        Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
+                                        &nbsp; {/*space*/}
+                                        Amount: <input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                                        &nbsp; {/*space*/}
 
-                        <table><tbody>
-                            <tr>
-                                <th>Date</th>
-                                <th>Stuff</th>
-                                <th>Amount</th>
-                                <th>Type</th>
-                            </tr>
+                                        <br />
 
-                            {
-                                docs.map((oneDoc) => 
-                                    <tr key={oneDoc.docId}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
-                                        <td key={oneDoc.docId}>{oneDoc.date}</td>
-                                        <td>{oneDoc.stuff}</td>
-                                        <td>{oneDoc.amount}</td>
-                                        <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
+                                        <input type="radio" name="type" onChange={() => setType("i")} />Income
+                                        <br />
+                                        <input type="radio" name="type" onChange={() => setType("e")} />Expenses
 
-                                        <td>
-                                            <button onClick={() => {
-                                                setDate(oneDoc.date)
-                                                setStuff(oneDoc.stuff)
-                                                setAmount(oneDoc.amount)
-                                                setForWhat(oneDoc.type)
-                                                setDateRecorded(oneDoc.dateRecorded)
-                                                
-                                                setCurrentEditStuffId(oneDoc.docId)
-                                                
-                                                setEditWindow(true)
-                                            }}>Edit</button>
+                                        <br />
+
+                                        {
+                                            type === "i" ?
+                                            <div>Please choose:&nbsp;
+                                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="iSalary">Salary</option>
+                                                    <option value="iOther Income">Other Income</option>
+                                                </select>
+                                            </div>
+                                            :
+                                            <div>Please choose:&nbsp;
+                                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="eEducation">Education</option>
+                                                    <option value="eGroceries">Groceries</option>
+                                                    <option value="eFood">Food</option>
+                                                    <option value="eEntertainment">Entertainment</option>
+                                                    <option value="eOther Expenses">Other Expenses</option>
+                                                </select>
+                                            </div>
+                                        }
+
+                                        <br />
+
+                                        <button onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</button>
+                                    </form>
+
+                                    <br />
+
+                                    {
+                                        editWindow ?
+                                        <form>
+                                            <h4>Edit:</h4>
+                                            Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                                             &nbsp; {/*space*/}
-                                            <button onClick={() => deleteStuff(oneDoc.docId)}>Delete</button>
-                                        </td>
-                                    </tr>
-                                )
-                            }
-                        </tbody></table>
+                                            Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
+                                            &nbsp; {/*space*/}
+                                            Amount: <input value={amount<0?-amount:amount} onChange={(e) => setAmount(e.target.value)} />
+                                            &nbsp; {/*space*/}
+
+                                            <br />
+
+                                            <input type="radio" name="type" onChange={() => setType("i")} />Income
+                                            <br />
+                                            <input type="radio" name="type" onChange={() => setType("e")} />Expenses
+
+                                            <br />
+
+                                            {
+                                                type === "i" ?
+                                                <div>Please choose:&nbsp;
+                                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                        <option value=""></option>
+                                                        <option value="iSalary">Salary</option>
+                                                        <option value="iOther Income">Other Income</option>
+                                                    </select>
+                                                </div>
+                                                :
+                                                <div>Please choose:&nbsp;
+                                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                        <option value=""></option>
+                                                        <option value="eEducation">Education</option>
+                                                        <option value="eGroceries">Groceries</option>
+                                                        <option value="eFood">Food</option>
+                                                        <option value="eEntertainment">Entertainment</option>
+                                                        <option value="eOther Expenses">Other Expenses</option>
+                                                    </select>
+                                                </div>
+                                            }
+
+                                            <br />
+
+                                            <button onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</button>
+                                            &nbsp; {/*space*/}
+                                            <button onClick={() => setEditWindow(false)}>Cancel</button>
+                                        </form>
+                                        :
+                                        <div>
+                                        </div>
+                                    }
+                                </div>
+
+{/* TABLE COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                                <div className="col-md-6 col-sm-12 col-12">
+                                    <table><tbody>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Stuff</th>
+                                            <th>Amount</th>
+                                            <th>Type</th>
+                                        </tr>
+
+                                        {
+                                            docs.map((oneDoc) => 
+                                                <tr key={oneDoc.docId}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
+                                                    <td key={oneDoc.docId}>{oneDoc.date}</td>
+                                                    <td>{oneDoc.stuff}</td>
+                                                    <td>{oneDoc.amount}</td>
+                                                    <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
+
+                                                    <td>
+                                                        <button onClick={() => {
+                                                            setDate(oneDoc.date)
+                                                            setStuff(oneDoc.stuff)
+                                                            setAmount(oneDoc.amount)
+                                                            setForWhat(oneDoc.type)
+                                                            setDateRecorded(oneDoc.dateRecorded)
+                                                            
+                                                            setCurrentEditStuffId(oneDoc.docId)
+                                                            
+                                                            setEditWindow(true)
+                                                        }}>Edit</button>
+                                                        &nbsp; {/*space*/}
+                                                        <button onClick={() => deleteStuff(oneDoc.docId)}>Delete</button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        }
+                                    </tbody></table>
+                                </div>
+                            </div>
+                        </div>
+
+                        
                         
                     </div>
                     :
