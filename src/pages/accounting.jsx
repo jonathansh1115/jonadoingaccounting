@@ -396,7 +396,7 @@ export default (props) => {
                                         <Button onClick={() => setEditWindow(false)}>Cancel</Button>
                                     </ModalFooter>
                                 </Modal>
-
+                                
 {/* TABLE COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
                                 <div className="col-md-8 col-sm-12 col-12">
                                     <Table>
@@ -455,20 +455,23 @@ export default (props) => {
                                                 )
                                             }
                                         </tbody>
+
+                                        {/* DELETE MODAL */}
+                                        <Modal centered isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)}>
+                                            <ModalHeader>Delete {stuff}?</ModalHeader>
+
+                                            <ModalFooter>
+                                                <Button color="primary" onClick={() => {deleteStuff(docId)}}>Submit</Button>
+                                                <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
+                                            </ModalFooter>
+                                        </Modal>
+
                                     </Table>
                                 </div>
                             </div>
                         </div>
                         
-                        {/* DELETE MODAL */}
-                        <Modal centered isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)}>
-                            <ModalHeader>Delete {stuff}?</ModalHeader>
-
-                            <ModalFooter>
-                                <Button color="primary" onClick={() => {deleteStuff(docId)}}>Submit</Button>
-                                <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
+                        
                         
                     </div>
                     :

@@ -21,6 +21,14 @@ export default (props) => {
                     }
                     <img src="https://media.giphy.com/media/Wj7lNjMNDxSmc/giphy.gif" />
                     <br />
+
+                    <h6>Note:</h6>
+                    <p>
+                        There is a known bug where if you add/edit an item in all "accounting" pages, 
+                        the summary section's data will be incorrect. To get the actual data, you 
+                        need to refresh the page.
+                    </p>
+                    
                     <button onClick={props.signOutWithGoogle}>Sign out</button>
                 </div>
                 :
