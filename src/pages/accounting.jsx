@@ -253,51 +253,59 @@ export default (props) => {
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
 
-{/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
                         <div className="container-fluid">
                             <div className="row">
+{/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
                                 <div className="col-md-6 col-sm-12 col-12">
                                     <form>
-                                        Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                                        &nbsp; {/*space*/}
-                                        Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
-                                        &nbsp; {/*space*/}
-                                        Amount: <input value={amount} onChange={(e) => setAmount(e.target.value)} />
-                                        &nbsp; {/*space*/}
+                                        <InputGroup>
+                                            <InputGroupText>Date</InputGroupText>
+                                            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                                        </InputGroup>
 
-                                        <br />
+                                        <InputGroup>
+                                            <InputGroupText>Stuff</InputGroupText>
+                                            <Input value={stuff} onChange={(e) => setStuff(e.target.value)} />
+                                        </InputGroup>
 
-                                        <input type="radio" name="type" onChange={() => setType("i")} />Income
-                                        <br />
-                                        <input type="radio" name="type" onChange={() => setType("e")} />Expenses
+                                        <InputGroup>
+                                            <InputGroupText>Amount</InputGroupText>
+                                            <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                                        </InputGroup>
 
-                                        <br />
+                                        <InputGroup>
+                                            Income&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("i")} />
+                                        </InputGroup>
+
+                                        <InputGroup>
+                                            Expenses&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("e")} />
+                                        </InputGroup>
 
                                         {
                                             type === "i" ?
-                                            <div>Please choose:&nbsp;
-                                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option value=""></option>
+                                            <InputGroup>
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option selected value=""></option>
                                                     <option value="iSalary">Salary</option>
                                                     <option value="iOther Income">Other Income</option>
-                                                </select>
-                                            </div>
+                                                </Input>
+                                            </InputGroup>
                                             :
-                                            <div>Please choose:&nbsp;
-                                                <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option value=""></option>
+                                            <InputGroup>
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option selected value=""></option>
                                                     <option value="eEducation">Education</option>
                                                     <option value="eGroceries">Groceries</option>
                                                     <option value="eFood">Food</option>
                                                     <option value="eEntertainment">Entertainment</option>
                                                     <option value="eOther Expenses">Other Expenses</option>
-                                                </select>
-                                            </div>
+                                                </Input>
+                                            </InputGroup>
                                         }
 
-                                        <br />
-
-                                        <button onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</button>
+                                        <Button onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</Button>
                                     </form>
 
                                     <br />
