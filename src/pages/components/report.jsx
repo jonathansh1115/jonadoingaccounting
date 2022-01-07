@@ -18,7 +18,7 @@ export default (props) => {
         <div className="container-fluid summary">
             <div className="row">
                 <div className="col-12">
-                    <h3>Summary:</h3>
+                    <h4>Summary:</h4>
                 </div>
             </div>
             

@@ -3,7 +3,6 @@ import "./css/menu.css"
 
 // libraries
 import { Link } from "react-router-dom"
-// library
 import {
     getAuth,
     signInWithPopup,
