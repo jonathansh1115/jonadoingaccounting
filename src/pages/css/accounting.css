@@ -1,3 +1,10 @@
+/* coupled with report.css */
+@media screen and (max-width: 576px) {
+    .containers {
+        padding: 0 5px 0 5px !important;
+    }
+}
+
 .title {
     margin-top: 2%;
 }
@@ -13,6 +20,10 @@ h2#title {
 
 .input {
     margin-bottom: 2%;
+}
+
+.tdForButtons {
+    display: flex;
 }
 
 #editButton {

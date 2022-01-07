@@ -254,17 +254,12 @@ export default (props) => {
         setAccBalance(balance)
     }
     
-    /**
-     * Stuff for bootstrap toggle and all those crap
-     * 
-     */
-    
     return (
         <div>
             {
                 props.signedIn ?
                     <div>
-                        <div className="container-fluid title">
+                        <div className="container-fluid title containers">
                             <div className="row">
                                 <h2 id="title">{currentAccountingName}</h2>
                             </div>
@@ -275,7 +270,7 @@ export default (props) => {
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
 
-                        <div className="container-fluid">
+                        <div className="container-fluid containers">
                             <div className="row">
 {/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
                                 <div className="col-md-4 col-sm-12 col-12">
@@ -308,7 +303,7 @@ export default (props) => {
                                             <InputGroup className="input">
                                                 <InputGroupText>Please choose</InputGroupText>
                                                 <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option selected value=""></option>
+                                                    <option value=""></option>
                                                     <option value="iSalary">Salary</option>
                                                     <option value="iOther Income">Other Income</option>
                                                 </Input>
@@ -317,7 +312,7 @@ export default (props) => {
                                             <InputGroup className="input">
                                                 <InputGroupText>Please choose</InputGroupText>
                                                 <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option selected value=""></option>
+                                                    <option value=""></option>
                                                     <option value="eEducation">Education</option>
                                                     <option value="eGroceries">Groceries</option>
                                                     <option value="eFood">Food</option>
@@ -364,7 +359,7 @@ export default (props) => {
                                             <InputGroup className="input">
                                                 <InputGroupText>Please choose</InputGroupText>
                                                 <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option selected value=""></option>
+                                                    <option value=""></option>
                                                     <option value="iSalary">Salary</option>
                                                     <option value="iOther Income">Other Income</option>
                                                 </Input>
@@ -373,7 +368,7 @@ export default (props) => {
                                             <InputGroup className="input">
                                                 <InputGroupText>Please choose</InputGroupText>
                                                 <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                                    <option selected value=""></option>
+                                                    <option value=""></option>
                                                     <option value="eEducation">Education</option>
                                                     <option value="eGroceries">Groceries</option>
                                                     <option value="eFood">Food</option>
@@ -411,8 +406,8 @@ export default (props) => {
                                                         <td>{oneDoc.amount}</td>
                                                         <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
 
-                                                        <td>
-                                                            <Button outline color="primary" 
+                                                        <td className="tdForButtons">
+                                                            <Button className="btn-sm" outline color="primary" 
                                                                 id="editButton"
                                                                 onClick={() => {
                                                                     setDate(oneDoc.date)
@@ -423,11 +418,15 @@ export default (props) => {
                                                                     
                                                                     setCurrentEditStuffId(oneDoc.docId)
                                                                     
-                                                                    setEditWindow(true) }}>
+                                                                    setEditWindow(true)}
+                                                                }
+                                                            >
                                                                 <img src={editIcon} style={{width: "15px"}} />
                                                             </Button>
                                                             
-                                                            <Button outline color="danger" onClick={() => deleteStuff(oneDoc.docId)}>
+                                                            <Button className="btn-sm" outline color="danger" 
+                                                                onClick={() => deleteStuff(oneDoc.docId)}
+                                                            >
                                                                 <img src={deleteIcon} style={{width: "15px"}} />
                                                             </Button>
                                                         </td>

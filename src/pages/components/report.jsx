@@ -15,7 +15,7 @@ import {
 export default (props) => {
 
     return (
-        <div className="container-fluid summary">
+        <div className="container-fluid summary containers">
             <div className="row">
                 <div className="col-12">
                     <h4>Summary:</h4>
