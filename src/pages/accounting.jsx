@@ -217,6 +217,11 @@ export default (props) => {
      */
     const deleteStuff = (docId) => {
         deleteDoc(doc(props.db, databaseLocation, docId))
+
+        // reset
+        setStuff("")
+        setDocId("")
+        setDeleteModal(false)
     }
 
     /**
@@ -254,6 +259,13 @@ export default (props) => {
         setAccBalance(balance)
     }
     
+    /**
+     * Delete item modal
+     * 
+     */
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [docId, setDocId] = useState("")
+
     return (
         <div>
             {
@@ -424,8 +436,17 @@ export default (props) => {
                                                                 <img src={editIcon} style={{width: "15px"}} />
                                                             </Button>
                                                             
-                                                            <Button className="btn-sm" outline color="danger" 
+                                                            {/* <Button className="btn-sm" outline color="danger" 
                                                                 onClick={() => deleteStuff(oneDoc.docId)}
+                                                            >
+                                                                <img src={deleteIcon} style={{width: "15px"}} />
+                                                            </Button> */}
+                                                            <Button className="btn-sm" outline color="danger" 
+                                                                onClick={() => {
+                                                                    setDeleteModal(true)
+                                                                    setDocId(oneDoc.docId)
+                                                                    setStuff(oneDoc.stuff)}
+                                                                }
                                                             >
                                                                 <img src={deleteIcon} style={{width: "15px"}} />
                                                             </Button>
@@ -438,6 +459,16 @@ export default (props) => {
                                 </div>
                             </div>
                         </div>
+                        
+                        {/* DELETE MODAL */}
+                        <Modal centered isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)}>
+                            <ModalHeader>Delete {stuff}?</ModalHeader>
+
+                            <ModalFooter>
+                                <Button color="primary" onClick={() => {deleteStuff(docId)}}>Submit</Button>
+                                <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
                         
                     </div>
                     :
