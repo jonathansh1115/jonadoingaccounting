@@ -120,7 +120,14 @@ export default (props) => {
                 deleteDoc(doc(props.db, collectionLocation, docu.id))
             })
         })
+
+        // Close delete modal
+        setDeleteModal(false)
     }
+    
+    // Delete modal
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [collection2bDeleted, setCollection2bDeleted] = useState(false)
     
     return (
         <div>
@@ -147,7 +154,10 @@ export default (props) => {
                                 <p>{collection.substring(1, collection.length)}</p>
                             </div>
                             <div className="col-2">
-                                <Button outline color="danger" className="btn-sm" onClick={() => deleteStuff(collection)}>
+                                <Button outline color="danger" className="btn-sm" onClick={() => {
+                                    setDeleteModal(true)
+                                    setCollection2bDeleted(collection)
+                                }}>
                                     <img src={deleteIcon} style={{width: "15px"}} />
                                 </Button>
                             </div>
@@ -155,6 +165,16 @@ export default (props) => {
                     )
                 }
             </div>
+
+            {/* DELETE MODAL */}
+            <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)}>
+                <ModalHeader>Delete {collection2bDeleted}?</ModalHeader>
+                
+                <ModalFooter>
+                    <Button color="danger" onClick={() => deleteStuff(collection2bDeleted)}>Delete</Button>
+                    <Button color="primary" onClick={() => setDeleteModal(false)}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
         </div>
     )
 }
