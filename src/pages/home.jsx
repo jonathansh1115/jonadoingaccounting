@@ -2,11 +2,20 @@ import React, {useState} from "react";
 
 // library
 import {
+    Navbar,
     Button,
     Input,
     InputGroupText,
     InputGroup,
-    Table
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
 } from "reactstrap"
 
 // src
@@ -16,7 +25,8 @@ export default (props) => {
 
     // START OF HOMEPAGE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     return (
-        <div>
+        // "title" and "containers" are from accounting.css
+        <div className="container-fluid title containers">
             {
                 props.signedIn ?
                 <div>
@@ -36,7 +46,8 @@ export default (props) => {
                         need to refresh the page.
                     </p>
                     
-                    <button onClick={props.signOutWithGoogle}>Sign out</button>
+                    <Button color="warning" style={{marginTop: "5%"}}
+                     onClick={props.signOutWithGoogle}>Sign out</Button>
                 </div>
                 :
                 <div>
@@ -45,7 +56,7 @@ export default (props) => {
                         Log in with Google
                     </Button>
                     <br />
-                    <img src="https://media.giphy.com/media/YpkBkJ6cPrFijHAaUt/giphy.gif" width="100px" />
+                    <img src="https://media.giphy.com/media/YpkBkJ6cPrFijHAaUt/giphy.gif" width="100px" style={{marginLeft: "4%"}} />
                     <br /><br /><br />
                     <a href="https://github.com/jonathansh1115/jonadoingaccounting" target="_blank">Github Repo（程式码在此）</a>
                 </div>

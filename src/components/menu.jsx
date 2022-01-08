@@ -171,7 +171,7 @@ export default (props) => {
                         </div>
 
                         {/* CREATE NEW MODAL */}
-                        <Modal isOpen={newTabForm} toggle={() => setNewTabForm(true)}>
+                        <Modal isOpen={newTabForm} toggle={() => setNewTabForm(false)}>
                             <ModalHeader>Create new accounting page</ModalHeader>
 
                             <ModalBody>

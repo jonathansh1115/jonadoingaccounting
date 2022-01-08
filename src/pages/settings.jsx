@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import "./css/settings.css"
 
 // library
 import {
@@ -18,6 +19,25 @@ import {
     serverTimestamp,
     where
 } from 'firebase/firestore';
+import {
+    Navbar,
+    Button,
+    Input,
+    InputGroupText,
+    InputGroup,
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from "reactstrap"
+
+// src
+import deleteIcon from "./src/delete.png"
 
 export default (props) => {
 
@@ -104,18 +124,37 @@ export default (props) => {
     
     return (
         <div>
-            <h3>Settings</h3>
+            {/* The "title" and "containers" classname is from accounting.css */}
+            <div className="container-fluid title containers">
+                <div className="row">
+                    <h2 style={{fontWeight: "bold"}}>Settings</h2>
+                </div>
 
-            <p>Your accounting documents:</p>
+                
+            </div>
 
-            {
-                collections.map((collection) =>
-                    <div>
-                        <p>{collection.substring(1, collection.length)}</p>
-                        <button onClick={() => deleteStuff(collection)}>Delete</button>&nbsp;
-                    </div>
-                )
-            }
+            <div className="container-fluid title containers">
+                <div className="row">
+                    <h5>Your accounting documents:</h5>
+                </div>
+            </div>
+
+            <div className="container-fluid title containers">
+                {
+                    collections.map((collection) =>
+                        <div className="row tabNames">
+                            <div className="col-2">
+                                <p>{collection.substring(1, collection.length)}</p>
+                            </div>
+                            <div className="col-2">
+                                <Button outline color="danger" className="btn-sm" onClick={() => deleteStuff(collection)}>
+                                    <img src={deleteIcon} style={{width: "15px"}} />
+                                </Button>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
         </div>
     )
 }

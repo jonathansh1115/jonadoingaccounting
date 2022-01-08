@@ -21,7 +21,6 @@ import {
     deleteDoc,
     serverTimestamp
 } from 'firebase/firestore';               // TODO remove unused imports
-// library
 import {
     Navbar,
     Button,
@@ -342,7 +341,7 @@ export default (props) => {
 
                                 </div>
 
-                                <Modal centered isOpen={editWindow} toggle={() => setEditWindow(true)}>
+                                <Modal centered isOpen={editWindow} toggle={() => setEditWindow(false)}>
                                     <ModalHeader>Edit "{stuff}"</ModalHeader>
 
                                     <ModalBody>
