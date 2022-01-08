@@ -45,6 +45,7 @@ import {
 // src
 import home from "./icons/home.png"
 import settings from "./icons/settings.png"
+import createNew from "./icons/createnew.png"
 
 export default (props) => {
 
@@ -167,7 +168,8 @@ export default (props) => {
                         }
 
                         <div className="tab" onClick={() => setNewTabForm(true)}>
-                            <div>Create new</div>
+                            <img src={createNew} style={{width: "15px", paddingTop: "3px"}} />
+                            <div>&nbsp;Create new</div>
                         </div>
 
                         {/* CREATE NEW MODAL */}
