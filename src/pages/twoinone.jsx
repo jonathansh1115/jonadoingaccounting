@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./css/accounting.css"
 
 // library
 import {
@@ -19,10 +20,31 @@ import {
     orderBy,
     deleteDoc,
     serverTimestamp
-} from 'firebase/firestore';
+} from 'firebase/firestore';               // TODO remove unused imports
+import {
+    Navbar,
+    Button,
+    Input,
+    InputGroupText,
+    InputGroup,
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from "reactstrap"
 
 // components
-import Report from "./components/report.jsx"
+import Report from "./components/accountingReport.jsx"
+
+// src
+import editIcon from "./src/edit.png"
+import deleteIcon from "./src/delete.png"
+import optionsIcon from "./src/options.png"
 
 export default (props) => {
 
@@ -51,14 +73,14 @@ export default (props) => {
     const currentAccountingName = location.split("/")[2]
     
     const userId = window.localStorage.getItem("uid")
-    const databaseLocation = "users_stuff/" + userId + "/" + currentAccountingName
+    const databaseLocation = "users_stuff/" + userId + "/" + "t" + currentAccountingName
     
     const [type, setType] = useState("i")            // set if amount is income (i) or expenses (e)
     
     const [date, setDate] = useState("")             // String
     const [stuff, setStuff] = useState("")           // String
     const [amount, setAmount] = useState(0)          // Number
-    const [forWhat, setForWhat] = useState("")       // String: types: For college and For spending
+    const [forWhat, setForWhat] = useState("")       // String: types: Education...
     const [dateRecorded, setDateRecorded] = useState() // for edit function
 
     // split date into year month day
@@ -125,7 +147,7 @@ export default (props) => {
                 date: date,
                 dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
                 stuff: stuff,
-                amount: tempAmount,
+                amount: parseFloat(tempAmount),
                 type: forWhat,
                 dateRecorded: dateRecorded
             })
@@ -143,6 +165,9 @@ export default (props) => {
                 alert("Error: Field cannot be empty!")
             )
         }
+        
+        // Close the edit modal
+        setEditWindow(false)
     }
 
     /**
@@ -165,12 +190,13 @@ export default (props) => {
             const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const tempDocs = []
                 querySnapshot.forEach((doc) => {
+                    const type = doc.data().type
                     const tempObj = {
                         docId: doc.id,
                         date: doc.data().date,
                         stuff: doc.data().stuff,
                         amount: doc.data().amount,
-                        type: doc.data().type,
+                        type: type,
                         dateRecorded: doc.data().dateRecorded
                     }
                     tempDocs.push(tempObj)
@@ -193,6 +219,11 @@ export default (props) => {
      */
     const deleteStuff = (docId) => {
         deleteDoc(doc(props.db, databaseLocation, docId))
+
+        // reset
+        setStuff("")
+        setDocId("")
+        setDeleteModal(false)
     }
 
     /**
@@ -220,156 +251,221 @@ export default (props) => {
     }
 
     /**
-         * Get account balance.
-         * 
-         */
+     * Get account balance.
+     * 
+     */
     const [accBalance, setAccBalance]= useState(0)
     let balance = 0
     const getAccBalance = (amount) => {
         balance += amount
         setAccBalance(balance)
     }
+    
+    /**
+     * Delete item modal
+     * 
+     */
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [docId, setDocId] = useState("")
 
     return (
         <div>
             {
                 props.signedIn ?
                     <div>
-                        <h3>{currentAccountingName}</h3>
-
-                        <form>
-                            Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                            &nbsp; {/*space*/}
-                            Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
-                            &nbsp; {/*space*/}
-                            Amount: <input value={amount} onChange={(e) => setAmount(e.target.value)} />
-                            &nbsp; {/*space*/}
-
-                            <br />
-
-                            <input type="radio" name="type" onChange={() => setType("i")} />Income
-                            <br />
-                            <input type="radio" name="type" onChange={() => setType("e")} />Expenses
-
-                            <br />
-
-                            {
-                                type === "i" ?
-                                <div>Please choose:&nbsp;
-                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                        <option value=""></option>
-                                        <option value="iFor college">For college</option>
-                                        <option value="iFor spending">For spending</option>
-                                    </select>
-                                </div>
-                                :
-                                <div>Please choose:&nbsp;
-                                    <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                        <option value=""></option>
-                                        <option value="eFor college">For college</option>
-                                        <option value="eFor spending">For spending</option>
-                                    </select>
-                                </div>
-                            }
-
-                            <br />
-
-                            <button onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</button>
-                        </form>
-
-                        <br />
-
-                        {
-                            editWindow ?
-                            <form>
-                                <h4>Edit:</h4>
-                                Date: <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                                &nbsp; {/*space*/}
-                                Stuff: <input value={stuff} onChange={(e) => setStuff(e.target.value)} />
-                                &nbsp; {/*space*/}
-                                Amount: <input value={amount<0?-amount:amount} onChange={(e) => setAmount(e.target.value)} />
-                                &nbsp; {/*space*/}
-
-                                <br />
-
-                                <input type="radio" name="type" onChange={() => setType("i")} />Income
-                                <br />
-                                <input type="radio" name="type" onChange={() => setType("e")} />Expenses
-
-                                <br />
-
-                                {
-                                    type === "i" ?
-                                    <div>Please choose:&nbsp;
-                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                            <option value=""></option>
-                                            <option value="iFor college">For college</option>
-                                            <option value="iFor spending">For spending</option>
-                                        </select>
-                                    </div>
-                                    :
-                                    <div>Please choose:&nbsp;
-                                        <select value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
-                                            <option value=""></option>
-                                            <option value="eFor college">For college</option>
-                                            <option value="eFor spending">For spending</option>
-                                        </select>
-                                    </div>
-                                }
-
-                                <br />
-
-                                <button onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</button>
-                                &nbsp; {/*space*/}
-                                <button onClick={() => setEditWindow(false)}>Cancel</button>
-                            </form>
-                            :
-                            <div>
+                        <div className="container-fluid title containers">
+                            <div className="row">
+                                <h2 id="title">{currentAccountingName}</h2>
                             </div>
-                        }
+                        </div>
 
                         <Report
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
 
-                        <br />
+                        <div className="container-fluid containers">
+                            <div className="row">
+{/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                                <div className="col-md-4 col-sm-12 col-12">
+                                    <form className="form">
+                                        <InputGroup className="input">
+                                            <InputGroupText>Date</InputGroupText>
+                                            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                                        </InputGroup>
 
-                        <table><tbody>
-                            <tr>
-                                <th>Date</th>
-                                <th>Stuff</th>
-                                <th>Amount</th>
-                                <th>Type</th>
-                            </tr>
+                                        <InputGroup className="input">
+                                            <InputGroupText>Stuff</InputGroupText>
+                                            <Input value={stuff} onChange={(e) => setStuff(e.target.value)} />
+                                        </InputGroup>
 
-                            {
-                                docs.map((oneDoc) => 
-                                    <tr key={oneDoc.docId}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
-                                        <td key={oneDoc.docId}>{oneDoc.date}</td>
-                                        <td>{oneDoc.stuff}</td>
-                                        <td>{oneDoc.amount}</td>
-                                        <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
+                                        <InputGroup className="input">
+                                            <InputGroupText>Amount</InputGroupText>
+                                            <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                                        </InputGroup>
 
-                                        <td>
-                                            <button onClick={() => {
-                                                setDate(oneDoc.date)
-                                                setStuff(oneDoc.stuff)
-                                                setAmount(oneDoc.amount)
-                                                setForWhat(oneDoc.type)
-                                                setDateRecorded(oneDoc.dateRecorded)
-                                                
-                                                setCurrentEditStuffId(oneDoc.docId)
-                                                
-                                                setEditWindow(true)
-                                            }}>Edit</button>
-                                            &nbsp; {/*space*/}
-                                            <button onClick={() => deleteStuff(oneDoc.docId)}>Delete</button>
-                                        </td>
-                                    </tr>
-                                )
-                            }
-                        </tbody></table>
+                                        <InputGroup className="input">
+                                            Income&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("i")} />
+                                        </InputGroup>
+
+                                        <InputGroup className="input">
+                                            Expenses&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("e")} />
+                                        </InputGroup>
+
+                                        {
+                                            type === "i" ?
+                                            <InputGroup className="input">
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="iFor college">For college</option>
+                                                    <option value="iFor spending">For spending</option>
+                                                </Input>
+                                            </InputGroup>
+                                            :
+                                            <InputGroup className="input">
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="eFor college">For college</option>
+                                                    <option value="eFor spending">For spending</option>
+                                                </Input>
+                                            </InputGroup>
+                                        }
+
+                                        <Button color="primary" onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</Button>
+                                    </form>
+
+                                </div>
+
+                                <Modal centered isOpen={editWindow} toggle={() => setEditWindow(false)}>
+                                    <ModalHeader>Edit "{stuff}"</ModalHeader>
+
+                                    <ModalBody>
+                                        <InputGroup className="input">
+                                            <InputGroupText>Date</InputGroupText>
+                                            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                                        </InputGroup>
+
+                                        <InputGroup className="input">
+                                            <InputGroupText>Stuff</InputGroupText>
+                                            <Input value={stuff} onChange={(e) => setStuff(e.target.value)} />
+                                        </InputGroup>
+
+                                        <InputGroup className="input">
+                                            <InputGroupText>Amount</InputGroupText>
+                                            <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                                        </InputGroup>
+
+                                        <InputGroup className="input">
+                                            Income&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("i")} />
+                                        </InputGroup>
+
+                                        <InputGroup className="input">
+                                            Expenses&nbsp;<Input type="radio" name="type" value={amount} onChange={() => setType("e")} />
+                                        </InputGroup>
+
+                                        {
+                                            type === "i" ?
+                                            <InputGroup className="input">
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="iFor college">For college</option>
+                                                    <option value="iFor spending">For spending</option>
+                                                </Input>
+                                            </InputGroup>
+                                            :
+                                            <InputGroup className="input">
+                                                <InputGroupText>Please choose</InputGroupText>
+                                                <Input type="select" value={forWhat} onChange={(e) => setForWhat(e.target.value)}>
+                                                    <option value=""></option>
+                                                    <option value="eFor college">For college</option>
+                                                    <option value="eFor spending">For spending</option>
+                                                </Input>
+                                            </InputGroup>
+                                        }
+                                    </ModalBody>
+
+                                    <ModalFooter>
+                                        <Button color="primary" onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</Button>
+                                        <Button onClick={() => setEditWindow(false)}>Cancel</Button>
+                                    </ModalFooter>
+                                </Modal>
+                                
+{/* TABLE COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}
+                                <div className="col-md-8 col-sm-12 col-12">
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Stuff</th>
+                                                <th>Amount</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {
+                                                docs.map((oneDoc) => 
+                                                    <tr key={oneDoc.docId}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
+                                                        <td key={oneDoc.docId}>{oneDoc.date}</td>
+                                                        <td>{oneDoc.stuff}</td>
+                                                        <td>{oneDoc.amount}</td>
+                                                        <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
+
+                                                        <td className="tdForButtons">
+                                                            <Button className="btn-sm" outline color="primary" 
+                                                                id="editButton"
+                                                                onClick={() => {
+                                                                    setDate(oneDoc.date)
+                                                                    setStuff(oneDoc.stuff)
+                                                                    setAmount(oneDoc.amount)
+                                                                    setForWhat(oneDoc.type)
+                                                                    setDateRecorded(oneDoc.dateRecorded)
+                                                                    
+                                                                    setCurrentEditStuffId(oneDoc.docId)
+                                                                    
+                                                                    setEditWindow(true)}
+                                                                }
+                                                            >
+                                                                <img src={editIcon} style={{width: "15px"}} />
+                                                            </Button>
+                                                            
+                                                            {/* <Button className="btn-sm" outline color="danger" 
+                                                                onClick={() => deleteStuff(oneDoc.docId)}
+                                                            >
+                                                                <img src={deleteIcon} style={{width: "15px"}} />
+                                                            </Button> */}
+                                                            <Button className="btn-sm" outline color="danger" 
+                                                                onClick={() => {
+                                                                    setDeleteModal(true)
+                                                                    setDocId(oneDoc.docId)
+                                                                    setStuff(oneDoc.stuff)}
+                                                                }
+                                                            >
+                                                                <img src={deleteIcon} style={{width: "15px"}} />
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }
+                                        </tbody>
+
+                                        {/* DELETE MODAL */}
+                                        <Modal centered isOpen={deleteModal} toggle={() => setDeleteModal(!deleteModal)}>
+                                            <ModalHeader>Delete {stuff}?</ModalHeader>
+
+                                            <ModalFooter>
+                                                <Button color="danger" onClick={() => {deleteStuff(docId)}}>Delete</Button>
+                                                <Button color="primary" onClick={() => setDeleteModal(false)}>Cancel</Button>
+                                            </ModalFooter>
+                                        </Modal>
+
+                                    </Table>
+                                </div>
+                            </div>
+                        </div>
                         
                     </div>
                     :
