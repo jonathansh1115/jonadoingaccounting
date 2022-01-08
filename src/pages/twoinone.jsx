@@ -39,7 +39,13 @@ import {
 } from "reactstrap"
 
 // components
+import Title from "./components/title.jsx"
 import Report from "./components/accountingReport.jsx"
+
+// functions
+import writeStuff from "./functions/writeStuff.js"
+import editStuff  from "./functions/editStuff.js"
+import deleteStuff  from "./functions/deleteStuff.js"
 
 // src
 import editIcon from "./src/edit.png"
@@ -83,91 +89,52 @@ export default (props) => {
     const [forWhat, setForWhat] = useState("")       // String: types: Education...
     const [dateRecorded, setDateRecorded] = useState() // for edit function
 
-    // split date into year month day
-    const tempDateArr = date.split("-")
-    const year = tempDateArr[0]
-    const month = tempDateArr[1]
-    const day = tempDateArr[2]
-
     /**
-     * write stuff
-     * 
-     * @returns Error if input is invalid
+     * Execute the writeStuff() function
      */
-    const writeStuff = () => {
-        if (Number.isNaN(parseFloat(amount))) { // make sure amount is a number
-            return (
-                alert("Error: Amount must be a positive integer!")
-            )
-        } else if (date !== "" && stuff !== "" && amount !== 0) {
-            addDoc(collection(props.db, databaseLocation), {
-                date: date,
-                dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
-                stuff: stuff,
-                amount: type=="i"?parseFloat(amount):-parseFloat(amount), // positive for i (income), negative for e (expenses)
-                type: forWhat,
-                dateRecorded: serverTimestamp()
-            })
-    
-            // reset to default
-            setDate("")
-            setStuff("")
-            setAmount(0)
-            setForWhat("")
-        } else {
-            return (
-                alert("Error: Field cannot be empty!")
-            )
-        }
+    const exWriteStuff = () => {
+        writeStuff(props.db, databaseLocation, amount, date, stuff, type, forWhat)
+
+        // Reset state to default
+        setDate("")
+        setStuff("")
+        setAmount(0)
+        setForWhat("")
     }
 
     /**
-     * Edit stuff
+     * Execute the editStuff() function
      * 
      */
     const [editWindow, setEditWindow] = useState(false)
     const [currentEditStuffId, setCurrentEditStuffId] = useState("")
 
-    const editStuff = () => {
-        // make sure amount sign is correct, ie positive for income and negative for expenses
-        let tempAmount = amount
-        if (type === "i") {
-            if (tempAmount < 0) {
-                tempAmount = -tempAmount
-            }
-        } else if (type === "e") {
-            if (tempAmount > 0) {
-                tempAmount = -tempAmount
-            }
-        }
+    const exEditStuff = () => {
+        editStuff(props.db, databaseLocation, amount, type, date, stuff, currentEditStuffId, forWhat, dateRecorded)
 
-        // the actual edit function
-        if (date !== "" && stuff !== "" && amount !== 0) {
-            setDoc(doc(props.db, databaseLocation, currentEditStuffId), {
-                date: date,
-                dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
-                stuff: stuff,
-                amount: parseFloat(tempAmount),
-                type: forWhat,
-                dateRecorded: dateRecorded
-            })
-    
-            // reset to default
-            setDate("")
-            setStuff("")
-            setAmount(0)
-            setForWhat("s")
-            setCurrentEditStuffId("")
+        // reset to default
+        setDate("")
+        setStuff("")
+        setAmount(0)
+        setForWhat("s")
+        setCurrentEditStuffId("")
 
-            setEditWindow(false)
-        } else {
-            return (
-                alert("Error: Field cannot be empty!")
-            )
-        }
-        
-        // Close the edit modal
+        // Close edit modal
         setEditWindow(false)
+    }
+    
+    /**
+     * Execute the deteleStuff() function
+     * 
+     * @param {*} docId 
+     */    
+    const exDeleteStuff = (docId) => {
+        deleteStuff(props.db, databaseLocation, docId)
+
+        // reset
+        setStuff("")
+        setDocId("")
+        setDeleteModal(false)
     }
 
     /**
@@ -183,49 +150,36 @@ export default (props) => {
      * read stuff: for getting multiple doc in a collection
      * 
      */
-    const [docs, setDocs] = useState([])
-    useEffect(() => {
-        setTimeout(() => {
-            const q = query(collection(props.db, databaseLocation), orderBy("dateTimestamp", "desc"))  // desc and asc
-            const unsubscribe = onSnapshot(q, (querySnapshot) => {
-                const tempDocs = []
-                querySnapshot.forEach((doc) => {
-                    const type = doc.data().type
-                    const tempObj = {
-                        docId: doc.id,
-                        date: doc.data().date,
-                        stuff: doc.data().stuff,
-                        amount: doc.data().amount,
-                        type: type,
-                        dateRecorded: doc.data().dateRecorded
-                    }
-                    tempDocs.push(tempObj)
-                    
-                    // if the month of the doc we are currently reading is in the list of months to be in the summary
-                    const monthOfTheDocCurrentlyReading = parseInt(doc.data().date.split("-")[1])
-                    setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount, doc.data().type[0])
-                    getAccBalance(doc.data().amount)
-                    
-                })
-                
-                setDocs(tempDocs)
-            })
-        }, 100);
-    }, [currentAccountingName])
+     const [docs, setDocs] = useState([])
+     useEffect(() => {
+         setTimeout(() => {
+             const q = query(collection(props.db, databaseLocation), orderBy("dateTimestamp", "desc"))  // desc and asc
+             const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                 const tempDocs = []
+                 querySnapshot.forEach((doc) => {
+                     const type = doc.data().type
+                     const tempObj = {
+                         docId: doc.id,
+                         date: doc.data().date,
+                         stuff: doc.data().stuff,
+                         amount: doc.data().amount,
+                         type: type,
+                         dateRecorded: doc.data().dateRecorded
+                     }
+                     tempDocs.push(tempObj)
+                     
+                     // if the month of the doc we are currently reading is in the list of months to be in the summary
+                     const monthOfTheDocCurrentlyReading = parseInt(doc.data().date.split("-")[1])
+                     setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount, doc.data().type[0])
+                     getAccBalance(doc.data().amount)
+                     
+                 })
+                 
+                 setDocs(tempDocs)
+             })
+         }, 100);
+     }, [currentAccountingName])
     
-    /**
-     * delete stuff
-     * @param {*} docId 
-     */
-    const deleteStuff = (docId) => {
-        deleteDoc(doc(props.db, databaseLocation, docId))
-
-        // reset
-        setStuff("")
-        setDocId("")
-        setDeleteModal(false)
-    }
-
     /**
      * Collect data for summary.
      * 
@@ -273,11 +227,7 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <div className="container-fluid title containers">
-                            <div className="row">
-                                <h2 id="title">{currentAccountingName}</h2>
-                            </div>
-                        </div>
+                        <Title name={currentAccountingName} />
 
                         <Report
                             past5MonthsIncomes={past5MonthsIncomes}
@@ -333,7 +283,7 @@ export default (props) => {
                                             </InputGroup>
                                         }
 
-                                        <Button color="primary" onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</Button>
+                                        <Button color="primary" onClick={(e) => {exWriteStuff(); e.preventDefault()}}>Submit</Button>
                                     </form>
 
                                 </div>
@@ -388,7 +338,7 @@ export default (props) => {
                                     </ModalBody>
 
                                     <ModalFooter>
-                                        <Button color="primary" onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</Button>
+                                        <Button color="primary" onClick={(e) => {exEditStuff(); e.preventDefault()}}>Submit</Button>
                                         <Button onClick={() => setEditWindow(false)}>Cancel</Button>
                                     </ModalFooter>
                                 </Modal>
@@ -457,7 +407,7 @@ export default (props) => {
                                             <ModalHeader>Delete {stuff}?</ModalHeader>
 
                                             <ModalFooter>
-                                                <Button color="danger" onClick={() => {deleteStuff(docId)}}>Delete</Button>
+                                                <Button color="danger" onClick={() => {exDeleteStuff(docId)}}>Delete</Button>
                                                 <Button color="primary" onClick={() => setDeleteModal(false)}>Cancel</Button>
                                             </ModalFooter>
                                         </Modal>

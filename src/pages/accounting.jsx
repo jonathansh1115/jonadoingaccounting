@@ -39,6 +39,7 @@ import {
 } from "reactstrap"
 
 // components
+import Title from "./components/title.jsx"
 import Report from "./components/accountingReport.jsx"
 
 // functions
@@ -226,11 +227,7 @@ export default (props) => {
             {
                 props.signedIn ?
                     <div>
-                        <div className="container-fluid title containers">
-                            <div className="row">
-                                <h2 id="title">{currentAccountingName}</h2>
-                            </div>
-                        </div>
+                        <Title name={currentAccountingName} />
 
                         <Report
                             past5MonthsIncomes={past5MonthsIncomes}
