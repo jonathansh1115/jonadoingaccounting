@@ -20,7 +20,7 @@ import {
     orderBy,
     deleteDoc,
     serverTimestamp
-} from 'firebase/firestore';
+} from 'firebase/firestore';               // TODO remove unused imports
 // library
 import {
     Navbar,
@@ -148,7 +148,7 @@ export default (props) => {
                 date: date,
                 dateTimestamp: Timestamp.fromDate(new Date(year, month - 1, day)),
                 stuff: stuff,
-                amount: tempAmount,
+                amount: parseFloat(tempAmount),
                 type: forWhat,
                 dateRecorded: dateRecorded
             })
@@ -166,6 +166,9 @@ export default (props) => {
                 alert("Error: Field cannot be empty!")
             )
         }
+
+        // Close the edit modal
+        setEditWindow(false)
     }
 
     /**
@@ -339,7 +342,7 @@ export default (props) => {
 
                                 </div>
 
-                                <Modal centered isOpen={editWindow} toggle={() => setEditWindow(!editWindow)}>
+                                <Modal centered isOpen={editWindow} toggle={() => setEditWindow(true)}>
                                     <ModalHeader>Edit "{stuff}"</ModalHeader>
 
                                     <ModalBody>
@@ -392,7 +395,7 @@ export default (props) => {
                                     </ModalBody>
 
                                     <ModalFooter>
-                                        <Button color="primary" onClick={(e) => {writeStuff(); e.preventDefault()}}>Submit</Button>
+                                        <Button color="primary" onClick={(e) => {editStuff(); e.preventDefault()}}>Submit</Button>
                                         <Button onClick={() => setEditWindow(false)}>Cancel</Button>
                                     </ModalFooter>
                                 </Modal>
@@ -461,8 +464,8 @@ export default (props) => {
                                             <ModalHeader>Delete {stuff}?</ModalHeader>
 
                                             <ModalFooter>
-                                                <Button color="primary" onClick={() => {deleteStuff(docId)}}>Submit</Button>
-                                                <Button onClick={() => setDeleteModal(false)}>Cancel</Button>
+                                                <Button color="danger" onClick={() => {deleteStuff(docId)}}>Delete</Button>
+                                                <Button color="primary" onClick={() => setDeleteModal(false)}>Cancel</Button>
                                             </ModalFooter>
                                         </Modal>
 
@@ -470,8 +473,6 @@ export default (props) => {
                                 </div>
                             </div>
                         </div>
-                        
-                        
                         
                     </div>
                     :

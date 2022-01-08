@@ -1,9 +1,13 @@
 import React, {useState} from "react";
 
 // library
-// import { getAuth } from "firebase/auth";
-
-// const auth = getAuth()
+import {
+    Button,
+    Input,
+    InputGroupText,
+    InputGroup,
+    Table
+} from "reactstrap"
 
 export default (props) => {
 
@@ -33,11 +37,11 @@ export default (props) => {
                 </div>
                 :
                 <div>
-                    <button onClick={props.signInWithGoogle}>log in</button>
+                    <Button color="primary" onClick={props.signInWithGoogle} style={{margin: "1%"}}>log in</Button>
                     <br />
                     <img src="https://media.giphy.com/media/YpkBkJ6cPrFijHAaUt/giphy.gif" width="100px" />
                     <br /><br /><br />
-                    <a href="https://github.com/jonathansh1115/jonadoingaccounting" target="_blank">Github Repo</a>
+                    <a href="https://github.com/jonathansh1115/jonadoingaccounting" target="_blank">Github Repo（程式码在此）</a>
                 </div>
             }
         </div>
