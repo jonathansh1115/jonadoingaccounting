@@ -73,7 +73,7 @@ export default (props) => {
     const currentAccountingName = location.split("/")[2]
     
     const userId = window.localStorage.getItem("uid")
-    const databaseLocation = "users_stuff/" + userId + "/" + currentAccountingName
+    const databaseLocation = "users_stuff/" + userId + "/" + "a" + currentAccountingName
     
     const [type, setType] = useState("i")            // set if amount is income (i) or expenses (e)
     

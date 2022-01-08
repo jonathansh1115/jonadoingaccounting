@@ -127,7 +127,7 @@ export default (props) => {
     
     // Delete modal
     const [deleteModal, setDeleteModal] = useState(false)
-    const [collection2bDeleted, setCollection2bDeleted] = useState(false)
+    const [collection2bDeleted, setCollection2bDeleted] = useState("")
     
     return (
         <div>
@@ -168,7 +168,7 @@ export default (props) => {
 
             {/* DELETE MODAL */}
             <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)}>
-                <ModalHeader>Delete {collection2bDeleted}?</ModalHeader>
+                <ModalHeader>Delete {collection2bDeleted.substring(1, collection2bDeleted.length)}?</ModalHeader>
                 
                 <ModalFooter>
                     <Button color="danger" onClick={() => deleteStuff(collection2bDeleted)}>Delete</Button>
