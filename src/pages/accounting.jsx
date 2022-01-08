@@ -166,7 +166,7 @@ export default (props) => {
                 alert("Error: Field cannot be empty!")
             )
         }
-
+        
         // Close the edit modal
         setEditWindow(false)
     }

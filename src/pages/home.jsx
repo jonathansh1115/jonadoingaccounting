@@ -9,6 +9,9 @@ import {
     Table
 } from "reactstrap"
 
+// src
+import google from "./src/google.png"
+
 export default (props) => {
 
     // START OF HOMEPAGE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -37,7 +40,10 @@ export default (props) => {
                 </div>
                 :
                 <div>
-                    <Button color="primary" onClick={props.signInWithGoogle} style={{margin: "1%"}}>log in</Button>
+                    <Button outline color="primary" onClick={props.signInWithGoogle} style={{margin: "1%", backgroundColor:"rgb(242, 242, 242)"}}>
+                        <img src={google} style={{width: "20px", marginRight: "5px"}} />
+                        Log in with Google
+                    </Button>
                     <br />
                     <img src="https://media.giphy.com/media/YpkBkJ6cPrFijHAaUt/giphy.gif" width="100px" />
                     <br /><br /><br />

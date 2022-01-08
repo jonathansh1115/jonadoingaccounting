@@ -30,3 +30,7 @@ a:hover {
 p {
     margin: 0 !important;
 }
+
+.newTabInput {
+    margin-bottom: 2%;
+}

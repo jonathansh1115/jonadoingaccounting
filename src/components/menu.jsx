@@ -35,7 +35,11 @@ import {
     Input,
     InputGroupText,
     InputGroup,
-    Table
+    Table,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from "reactstrap"
 
 // src
@@ -166,29 +170,38 @@ export default (props) => {
                             <div>Create new</div>
                         </div>
 
-                        {
-                            newTabForm ?
-                            <form>
-                                <input type="radio" name="type" onChange={() => setNewTabType("a")} />Accounting
-                                <input type="radio" name="type" onChange={() => setNewTabType("p")} />Stock Portfolio
-                                <input type="radio" name="type" onChange={() => setNewTabType("t")} />2-in-1
-                                
-                                <br />
-                                
-                                Name: <input value={newTabName} onChange={(e) => setNewTabName(e.target.value)} />
+                        {/* CREATE NEW MODAL */}
+                        <Modal isOpen={newTabForm} toggle={() => setNewTabForm(true)}>
+                            <ModalHeader>Create new accounting page</ModalHeader>
 
-                                &nbsp; {/*space*/}
-                                <button onClick={(e) => { e.preventDefault();
-                                                            createNewCollection(newTabName, newTabType); 
-                                                            setNewTabForm(false);
-                                                        }}>Submit</button>
-                                &nbsp; {/*space*/}
-                                <button onClick={() => { setNewTabForm(false) }}>Cancel</button>
-                            </form>
-                            :
-                            <div></div>
-                        }
+                            <ModalBody>
+                                <InputGroup className="newTabInput">
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("a")} />&nbsp;Accounting
+                                </InputGroup>
+                                <InputGroup className="newTabInput">
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("p")} />&nbsp;Stock Portfolio
+                                </InputGroup>
+                                <InputGroup className="newTabInput">
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("t")} />&nbsp;2-in-1
+                                </InputGroup>
 
+                                <InputGroup className="newTabInput">
+                                    <InputGroupText>Tab name</InputGroupText>
+                                    <Input value={newTabName} onChange={(e) => setNewTabName(e.target.value)} />
+                                </InputGroup>
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <Button color="primary"
+                                    onClick={(e) => { 
+                                            e.preventDefault();
+                                            createNewCollection(newTabName, newTabType); 
+                                            setNewTabForm(false);
+                                        }}>Submit</Button>
+                                <Button onClick={() => {setNewTabForm(false)}}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                        
                         <br />
 
                         <Link to="/settings">
