@@ -42,7 +42,7 @@ export default (props) => {
                     <h6>Note:</h6>
                     <p>
                         There is a known bug where if you add/edit an item in all "accounting" pages, 
-                        the summary section's data will be incorrect. To get the actual data, you 
+                        the summary's graph data will be incorrect. To get the actual data, you 
                         need to refresh the page.
                     </p>
                     

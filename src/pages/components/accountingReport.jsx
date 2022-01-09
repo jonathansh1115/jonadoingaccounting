@@ -31,15 +31,9 @@ export default (props) => {
     
     return (
         <div className="container-fluid summaryContainer containers">
-            <div className="row">
-                <div className="col-12">
-                    <h4>Summary:</h4>
-                </div>
-            </div>
-            
             <div className="row summaryRow">
                 <div className="col-4 chart">
-                    Account Balance: {props.accBalance}
+                    Balance: {props.accBalance}
                 </div>
 
                 <div className="col-4 chartBox">
@@ -48,7 +42,7 @@ export default (props) => {
                 </div>
 
                 <div className="col-4 chartBox">
-                    <p style={{paddingLeft: "3%"}}>Past 5 Months' incomes:</p>
+                    <p style={{paddingLeft: "3%"}}>Past 5 Months' expenses:</p>
                     <LineChart data={summaryData(props.past5MonthsExpenses, props.listOfPast5Months)} height="100%" width="80%" />
                 </div>
             </div>

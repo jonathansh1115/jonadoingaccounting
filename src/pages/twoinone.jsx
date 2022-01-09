@@ -171,7 +171,7 @@ export default (props) => {
                      // if the month of the doc we are currently reading is in the list of months to be in the summary
                      const monthOfTheDocCurrentlyReading = parseInt(doc.data().date.split("-")[1])
                      setSummaryData(monthOfTheDocCurrentlyReading, doc.data().amount, doc.data().type[0])
-                     getAccBalance(doc.data().amount)
+                     getAccBalance(doc.data().amount, type)
                      
                  })
                  
@@ -209,10 +209,23 @@ export default (props) => {
      * 
      */
     const [accBalance, setAccBalance]= useState(0)
-    let balance = 0
-    const getAccBalance = (amount) => {
-        balance += amount
-        setAccBalance(balance)
+    const [collegeBalance, setCollegeBalance]= useState(0)
+    const [spendingBalance, setSpendingBalance]= useState(0)
+    let accBalanceVar = 0
+    let collegeBalanceVar = 0
+    let spendingBalanceVar = 0
+    const getAccBalance = (amount, type) => {
+        accBalanceVar += amount
+
+        if (type.substring(1, type.length) === "For college") {
+            collegeBalanceVar += amount
+        } else if (type.substring(1, type.length) === "For spending") {
+            spendingBalanceVar += amount
+        }
+        
+        setAccBalance(accBalanceVar)
+        setCollegeBalance(collegeBalanceVar)
+        setSpendingBalance(spendingBalanceVar)
     }
     
     /**
@@ -230,9 +243,14 @@ export default (props) => {
                         <Title name={currentAccountingName} />
 
                         <Report
+                            listOfPast5Months={listOfMonthsToSummary}
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
-                            accBalance={accBalance} />
+                            accBalance={accBalance}
+                            forCollegeBalance={collegeBalance}
+                            forSpendingBalance={spendingBalance} />
+
+                        <hr />
 
                         <div className="container-fluid containers">
                             <div className="row">
