@@ -235,6 +235,8 @@ export default (props) => {
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
 
+                        <hr />
+
                         <div className="container-fluid containers">
                             <div className="row">
 {/* FORM COL HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */}

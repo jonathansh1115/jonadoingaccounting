@@ -181,7 +181,7 @@ export default (props) => {
                                     <Input type="radio" name="type" onChange={() => setNewTabType("a")} />&nbsp;Accounting
                                 </InputGroup>
                                 <InputGroup className="newTabInput">
-                                    <Input type="radio" name="type" onChange={() => setNewTabType("p")} />&nbsp;Stock Portfolio
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("p")} />&nbsp;Stock Portfolio (coming soon ;)
                                 </InputGroup>
                                 <InputGroup className="newTabInput">
                                     <Input type="radio" name="type" onChange={() => setNewTabType("t")} />&nbsp;2-in-1
