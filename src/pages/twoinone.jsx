@@ -40,7 +40,7 @@ import {
 
 // components
 import Title from "./components/title.jsx"
-import Report from "./components/accountingReport.jsx"
+import Report from "./components/twoinoneReport.jsx"
 
 // functions
 import writeStuff from "./functions/writeStuff.js"

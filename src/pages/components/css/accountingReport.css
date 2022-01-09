@@ -5,11 +5,15 @@
     }
 } 
 
-.summary {
+.summaryContainer {
     margin: 2% 0 3% 0;
 }
 
-div.chart {
-    border: black;
-    border-style: solid;
+.summaryRow {
+    height: 200px;
+}
+
+div.chartBox {
+    padding: 0;
+    height: 100%;
 }

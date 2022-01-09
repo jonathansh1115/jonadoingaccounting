@@ -230,6 +230,7 @@ export default (props) => {
                         <Title name={currentAccountingName} />
 
                         <Report
+                            listOfPast5Months={listOfMonthsToSummary}
                             past5MonthsIncomes={past5MonthsIncomes}
                             past5MonthsExpenses={past5MonthsExpenses} 
                             accBalance={accBalance} />
