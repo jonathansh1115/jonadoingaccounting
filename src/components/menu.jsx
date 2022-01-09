@@ -40,12 +40,14 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
+    Tooltip
 } from "reactstrap"
 
 // src
 import home from "./icons/home.png"
 import settings from "./icons/settings.png"
 import createNew from "./icons/createnew.png"
+import info from "./icons/info2.png"
 
 export default (props) => {
 
@@ -143,6 +145,9 @@ export default (props) => {
         if (type === "t") return "twoinone"
     }
     
+    // Info modal
+    const [infoModalWindow, setInfoModalWindow] = useState(false)
+    
     return (
         <div>
             {
@@ -174,17 +179,27 @@ export default (props) => {
 
                         {/* CREATE NEW MODAL */}
                         <Modal isOpen={newTabForm} toggle={() => setNewTabForm(false)}>
-                            <ModalHeader>Create new accounting page</ModalHeader>
+                            {/* the block below is actually ModalHeader basically same thing but just one CSS difference
+                                that is width 100% */}
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    Create new accounting page
+                                </h5>
+                                <img src={info} className="infoIcon" onClick={() => setInfoModalWindow(true)} />
+                            </div>
 
                             <ModalBody>
                                 <InputGroup className="newTabInput">
-                                    <Input type="radio" name="type" onChange={() => setNewTabType("a")} />&nbsp;Accounting
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("a")} />
+                                        &nbsp;Accounting
                                 </InputGroup>
                                 <InputGroup className="newTabInput">
-                                    <Input type="radio" name="type" onChange={() => setNewTabType("p")} />&nbsp;Stock Portfolio (coming soon ;)
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("p")} />
+                                        &nbsp;Stock Portfolio (coming soon 😆)
                                 </InputGroup>
                                 <InputGroup className="newTabInput">
-                                    <Input type="radio" name="type" onChange={() => setNewTabType("t")} />&nbsp;2-in-1
+                                    <Input type="radio" name="type" onChange={() => setNewTabType("t")} />
+                                        &nbsp;2-in-1
                                 </InputGroup>
 
                                 <InputGroup className="newTabInput">
@@ -205,6 +220,24 @@ export default (props) => {
                         </Modal>
                         
                         <br />
+
+                        {/* INFO MODAL HEREEEEEEEEEEEEEEEE */}
+                        <Modal isOpen={infoModalWindow} toggle={() => setInfoModalWindow(false)}>
+                            <ModalHeader>Accounting pages type</ModalHeader>
+
+                            <ModalBody>
+                                Accounting - To record transactions of an account.
+                                <hr />
+                                Stock portfolio - Coming soon! 😆
+                                <hr />
+                                2-in-1 - Imagine having a bank account but some portion of the balance is for college and the other
+                                         is for personal use, that's exactly what this type is for! IDK what to name it 🤣
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <Button color="primary" onClick={() => setInfoModalWindow(false)}>Done</Button>
+                            </ModalFooter>
+                        </Modal>
 
                         <Link to="/settings">
                             <div className="tab" id="settingsTab">

@@ -34,3 +34,18 @@ p {
 .newTabInput {
     margin-bottom: 2%;
 }
+
+.divInModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.infoIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.infoIcon:hover {
+    cursor: pointer;
+}
