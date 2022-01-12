@@ -33,11 +33,11 @@ export default (props) => {
         <div className="container-fluid summaryContainer containers">
             <div className="row summaryRow">
                 <div className="col-4 chart">
-                    Total balance: {props.accBalance}
+                    Total balance: {props.accBalance.toFixed(2)}
                     <br />
-                    For college balance: {props.forCollegeBalance}
+                    For college balance: {props.forCollegeBalance.toFixed(2)}
                     <br />
-                    For spending balance: {props.forSpendingBalance}
+                    For spending balance: {props.forSpendingBalance.toFixed(2)}
                     <br />
                 </div>
 

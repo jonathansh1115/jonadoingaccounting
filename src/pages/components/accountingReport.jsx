@@ -33,7 +33,7 @@ export default (props) => {
         <div className="container-fluid summaryContainer containers">
             <div className="row summaryRow">
                 <div className="col-4 chart">
-                    Balance: {props.accBalance}
+                    Balance: {props.accBalance.toFixed(2)}
                 </div>
 
                 <div className="col-4 chartBox">
