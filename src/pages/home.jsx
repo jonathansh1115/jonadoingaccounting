@@ -20,6 +20,7 @@ import {
 
 // src
 import google from "./src/google.png"
+import table from "./src/table.JPG"
 
 export default (props) => {
 
@@ -39,15 +40,21 @@ export default (props) => {
                     <img src="https://media.giphy.com/media/Wj7lNjMNDxSmc/giphy.gif" />
                     <br />
 
-                    <h6>Note:</h6>
-                    <p>
-                        There is a known bug where if you add/edit an item in all "accounting" pages, 
-                        the summary's graph data will be incorrect. To get the actual data, you 
-                        need to refresh the page.
-                    </p>
-                    
                     <Button color="warning" style={{marginTop: "5%"}}
                      onClick={props.signOutWithGoogle}>Sign out</Button>
+
+                    <div style={{marginTop: "20px"}}>
+                        <h4>⚠️Note:</h4>
+                    </div>
+                    <div>
+                        <p>1. There is a known bug where if you add/edit an item in all "accounting" pages, 
+                        the summary's graph data will be incorrect. To get the actual data, you 
+                        need to refresh the page.</p>
+                        <p>2. The table looks like this on pc. IDK why it looks weird on phones and tablets.😅</p>
+                        <img src={table} width="500px" />
+                    </div>
+                    
+                    
                 </div>
                 :
                 <div>

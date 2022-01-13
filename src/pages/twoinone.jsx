@@ -375,48 +375,57 @@ export default (props) => {
 
                                         <tbody>
                                             {
-                                                docs.map((oneDoc) => 
-                                                    <tr key={oneDoc.docId}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
-                                                        <td key={oneDoc.docId}>{oneDoc.date}</td>
-                                                        <td>{oneDoc.stuff}</td>
-                                                        <td>{oneDoc.amount}</td>
-                                                        <td>{oneDoc.type.substring(1, oneDoc.type.length)}</td>
+                                                docs.map((oneDoc) => {
+                                                    const getBgClass = () => {
+                                                        if (oneDoc.amount < 0) {
+                                                            return "bg1"
+                                                        } else {
+                                                            return "bg2"
+                                                        }
+                                                    }
+                                                    return (
+                                                        <tr className={getBgClass()}>{/* i really dunno the point of key but for the sake of no more warning in console i put it there for now */}
+                                                            <td className="dateCol">{oneDoc.date}</td>
+                                                            <td>{oneDoc.stuff}</td>
+                                                            <td>{oneDoc.amount}</td>
+                                                            <td className="typeCol">{oneDoc.type.substring(1, oneDoc.type.length)}</td>
 
-                                                        <td className="tdForButtons">
-                                                            <Button className="btn-sm" outline color="primary" 
-                                                                id="editButton"
-                                                                onClick={() => {
-                                                                    setDate(oneDoc.date)
-                                                                    setStuff(oneDoc.stuff)
-                                                                    setAmount(oneDoc.amount)
-                                                                    setForWhat(oneDoc.type)
-                                                                    setDateRecorded(oneDoc.dateRecorded)
-                                                                    
-                                                                    setCurrentEditStuffId(oneDoc.docId)
-                                                                    
-                                                                    setEditWindow(true)}
-                                                                }
-                                                            >
-                                                                <img src={editIcon} style={{width: "15px"}} />
-                                                            </Button>
-                                                            
-                                                            {/* <Button className="btn-sm" outline color="danger" 
-                                                                onClick={() => deleteStuff(oneDoc.docId)}
-                                                            >
-                                                                <img src={deleteIcon} style={{width: "15px"}} />
-                                                            </Button> */}
-                                                            <Button className="btn-sm" outline color="danger" 
-                                                                onClick={() => {
-                                                                    setDeleteModal(true)
-                                                                    setDocId(oneDoc.docId)
-                                                                    setStuff(oneDoc.stuff)}
-                                                                }
-                                                            >
-                                                                <img src={deleteIcon} style={{width: "15px"}} />
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                )
+                                                            <td className="tdForButtons">
+                                                                <Button className="btn-sm" outline color="primary" 
+                                                                    id="editButton"
+                                                                    onClick={() => {
+                                                                        setDate(oneDoc.date)
+                                                                        setStuff(oneDoc.stuff)
+                                                                        setAmount(oneDoc.amount)
+                                                                        setForWhat(oneDoc.type)
+                                                                        setDateRecorded(oneDoc.dateRecorded)
+                                                                        
+                                                                        setCurrentEditStuffId(oneDoc.docId)
+                                                                        
+                                                                        setEditWindow(true)}
+                                                                    }
+                                                                >
+                                                                    <img src={editIcon} style={{width: "15px"}} />
+                                                                </Button>
+                                                                
+                                                                {/* <Button className="btn-sm" outline color="danger" 
+                                                                    onClick={() => deleteStuff(oneDoc.docId)}
+                                                                >
+                                                                    <img src={deleteIcon} style={{width: "15px"}} />
+                                                                </Button> */}
+                                                                <Button className="btn-sm" outline color="danger" 
+                                                                    onClick={() => {
+                                                                        setDeleteModal(true)
+                                                                        setDocId(oneDoc.docId)
+                                                                        setStuff(oneDoc.stuff)}
+                                                                    }
+                                                                >
+                                                                    <img src={deleteIcon} style={{width: "15px"}} />
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
                                             }
                                         </tbody>
 

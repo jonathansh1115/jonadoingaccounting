@@ -25,3 +25,19 @@
 #editButton {
     margin-right: 5px;
 }
+
+.dateCol {
+    min-width: 100px;
+}
+
+.typeCol {
+    min-width: 110px;
+}
+
+.bg1 {
+    background-image: linear-gradient(to right, rgb(255, 255, 255), rgb(218, 244, 250), rgb(255, 255, 255));
+}
+
+.bg2 {
+    background-image: linear-gradient(to right, rgb(255, 255, 255), rgb(234, 226, 247), rgb(255, 255, 255));
+}
