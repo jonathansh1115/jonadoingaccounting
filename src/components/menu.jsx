@@ -193,15 +193,17 @@ export default (props) => {
                                     <Input type="radio" name="type" onChange={() => setNewTabType("a")} />
                                         &nbsp;Accounting
                                 </InputGroup>
-                                <InputGroup className="newTabInput">
+                                {/* <InputGroup className="newTabInput">
                                     <Input type="radio" name="type" onChange={() => setNewTabType("p")} />
                                         &nbsp;Stock Portfolio (coming soon 😆)
-                                </InputGroup>
+                                </InputGroup> */}
                                 <InputGroup className="newTabInput">
                                     <Input type="radio" name="type" onChange={() => setNewTabType("t")} />
                                         &nbsp;2-in-1
                                 </InputGroup>
 
+                                <br />
+                                
                                 <InputGroup className="newTabInput">
                                     <InputGroupText>Tab name</InputGroupText>
                                     <Input value={newTabName} onChange={(e) => setNewTabName(e.target.value)} />
@@ -228,8 +230,8 @@ export default (props) => {
                             <ModalBody>
                                 Accounting - To record transactions of an account.
                                 <hr />
-                                Stock portfolio - Coming soon! 😆
-                                <hr />
+                                {/* Stock portfolio - Coming soon! 😆
+                                <hr /> */}
                                 2-in-1 - Imagine having a bank account but some portion of the balance is for college and the other
                                          is for personal use, that's exactly what this type is for! IDK what to name it 🤣
                             </ModalBody>

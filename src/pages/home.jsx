@@ -47,10 +47,15 @@ export default (props) => {
                         <h4>⚠️Note:</h4>
                     </div>
                     <div>
-                        <p>1. There is a known bug where if you add/edit an item in all "accounting" pages, 
+                        <p>1. User agreement: For the sake of transparency, I (the owner of this site) 
+                            can view the database that stores all records and data of every user. However, 
+                            I will not do so. Also, I do not have access to your account. By logging in 
+                            with your Google Account, you agree to provide this site with your email address 
+                            and name. This site only uses this information to identify and authenticate users.</p>
+                        <p>2. There is a known bug where if you add/edit an item in all "accounting" pages, 
                         the summary's graph data will be incorrect. To get the actual data, you 
                         need to refresh the page.</p>
-                        <p>2. The table looks like this on pc. IDK why it looks weird on phones and tablets.😅</p>
+                        <p>3. The table looks like this on pc. IDK why it looks weird on phones and tablets.😅</p>
                         <img src={table} width="500px" />
                     </div>
                     
