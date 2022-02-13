@@ -1,6 +1,6 @@
 Hi :)
 
-Check out the website @ https://accounting.itsmejonathan.com
+Check out the web app @ https://accounting.itsmejonathan.com
 
 # Getting Started with Create React App
 
